@@ -38,6 +38,7 @@ page 50102 "Convertible List"
     ModifyAllowed = true;  					// Permite modificações.
     DeleteAllowed = false;  					// Impede deleções.
     DataAccessIntent = ReadOnly;  				// Indica que a página é apenas para leitura.
+    CardPageId = "Nome do arquivo card"				// Isso faz que ao clicar no id na lista, abra o card.
 
     layout
     {

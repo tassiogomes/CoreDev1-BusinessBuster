@@ -39,10 +39,6 @@ ________________________________________________________________________________
     				}
 
 
-		• DrillDownPageID e LookupPageID - para criar essas duas propriedades, tem que haver um arquivo de lista, não só o da tabela.
+		• 	 - para criar essas duas propriedades, tem que haver um arquivo de lista, não só o da tabela.
 
 
-
-
-Pages table
-________________________________________________________________________________________________________________
