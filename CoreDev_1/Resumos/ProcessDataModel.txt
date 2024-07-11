@@ -1,0 +1,83 @@
+- Standard data model
+________________________________________________________________________________________________________________
+
+
+	• **Work with the standard data model**
+		• Todas as áreas de aplicação no Business Central seguem os mesmos princípios e possuem um modelo de dados semelhante. Tabelas mestre, subsidiárias, de documentos, de diários, de razão e outras têm papéis equivalentes. Certos padrões são consistentemente aplicados em todas as áreas de aplicação, permitindo seguir padrões de código específicos para cada tipo de tabela.
+
+		• A consistência do modelo de dados e dos padrões de fluxo de dados é crucial para usuários e desenvolvedores. Usuários que dominam uma área de aplicação podem rapidamente entender outras áreas ao compreender os princípios do modelo de dados. Para desenvolvedores, o conhecimento desses princípios permite personalizar o aplicativo padrão, criar novas áreas de aplicação e manter uma experiência consistente. Essa capacidade aumenta a produtividade dos usuários.
+
+		• Cada área de aplicação possui três grupos de tabelas:
+
+			• Configuração
+				• Tabelas de configuração são estáticas ou mudam lentamente, onde os usuários inserem informações uma vez e raramente as alteram. O aplicativo utiliza essas tabelas durante a criação, modificação ou exclusão de registros em outras tabelas, como tabelas de transações. As informações dessas tabelas são frequentemente verificadas por processos como o lançamento de dados. Alterar informações nessas tabelas afeta o processamento de dados ou altera outros aspectos da funcionalidade de uma área de aplicação.
+
+			• Transação operacional
+				• Tabelas de transação operacional são as principais tabelas de trabalho para os usuários, onde eles inserem informações regularmente. Adicionar, modificar ou excluir informações nessas tabelas normalmente não afeta o aplicativo ou o negócio.
+
+			• Transação lançada
+				• Tabelas de transação lançada geram automaticamente informações durante processos de lançamento. Os usuários não podem criar novos registros nessas tabelas, nem alterar ou excluir registros. Existem algumas exceções em que os usuários podem alterar ou excluir informações, todas justificadas por lógica de negócios clara.
+
+	• **Operational transaction tables**
+		• As tabelas de transação operacional são as principais tabelas de trabalho para os usuários. Os usuários inserem informações regularmente nessas tabelas. Adicionar, alterar ou excluir informações nessas tabelas geralmente não afeta o aplicativo ou o negócio.
+
+	• **Posted transaction tables**
+		• Com as tabelas de transação lançada, as informações são geradas automaticamente pelo aplicativo durante processos de lançamento e similares. Usuários não podem criar novos registros nessas tabelas, nem alterar ou excluir registros. Existem algumas exceções em que os usuários podem alterar ou excluir informações, todas com justificativa clara de lógica de negócios.
+
+
+
+
+
+- Data Triggers
+________________________________________________________________________________________________________________
+
+
+	• **Use typical data triggers**
+		• Além de manter a validade dos dados por meio de tipos de dados e relacionamentos de tabelas, o Business Central também contém lógica de negócios relacionada a dados. Essa lógica garante que regras de negócios mais complexas sejam consistentemente aplicadas conforme os usuários inserem, alteram ou excluem informações no banco de dados. Essas regras são codificadas como código AL em gatilhos de tabela. Você pode encontrar os mesmos padrões de código nos mesmos tipos de tabelas, independentemente da área de aplicação a que pertencem.
+
+	• **OnInsert trigger**
+		• O gatilho OnInsert da tabela é acionado quando um usuário insere um novo registro em uma tabela. O código no gatilho é executado antes que o registro seja inserido na tabela. Se o código no gatilho causar um erro em tempo de execução, a operação de inserção é cancelada.
+		• Propósitos do gatilho OnInsert em diferentes tipos de tabelas:
+			• Tabela mestre - Atribui o campo No. da série numérica apropriada se o usuário não tiver fornecido o valor manualmente. Também atribui as dimensões padrão para o tipo de conta, com base na configuração na tabela Dimensão Padrão.
+			• Tabela subsidiária - Verifica se todos os campos de chave primária necessários são inseridos para tabelas com chaves primárias complexas com três ou mais campos, ou verifica se alguma combinação de chaves primárias mutuamente exclusiva ou inaceitável foi selecionada.
+			• Tabela de diário - Valida os valores nos campos Dimensão de Atalho 1 e Dimensão de Atalho 2.
+			• Tabela de documento (cabeçalho) - Atribui o campo No. da série numérica apropriada se o usuário não tiver fornecido o valor manualmente. Aplica certos padrões, como datas. Verifica o filtro no campo relacionado ao registro mestre primário da área de aplicação. Também atribui o valor do filtro ao campo se o campo estiver filtrado para um único valor.
+			• Tabela de documento (linha) - Garante que o status possa aceitar novas linhas se o documento suportar diferentes status.
+
+	• **OnModify trigger**
+		• O gatilho OnModify da tabela é acionado quando um usuário altera um registro existente em uma tabela. O código no gatilho é executado antes que o registro seja atualizado na tabela. A aplicação cancela as modificações se ocorrer um erro no código do gatilho.
+		• Propósitos do gatilho OnModify em diferentes tipos de tabelas:
+			• Tabela mestre - Define o campo Última Data Modificada para a data atual do sistema. (Para tabelas mestras, o gatilho OnRename deve concluir a mesma ação.)
+			• Tabela de diário - Garante que uma modificação não viole as regras de negócios para o tipo específico de diário.
+			• Tabela de documento (cabeçalho) - Atribui o campo No. da série numérica apropriada se o usuário não tiver fornecido o valor manualmente. Aplica certos padrões, como datas. Verifica o filtro no campo relacionado ao registro mestre primário da área de aplicação. Também atribui o valor do filtro ao campo se o campo estiver filtrado para um único valor.
+			• Tabela de documento (linha) - Garante que a modificação não viole as regras de negócios para o documento específico.
+
+	• **OnDelete trigger**
+		• O gatilho OnDelete da tabela é acionado quando um usuário exclui um registro de uma tabela. O código no gatilho é executado antes que o registro seja fisicamente excluído da tabela. O registro não é excluído se ocorrer um erro no código do gatilho.
+		• Propósitos do gatilho OnDelete em diferentes tipos de tabelas:
+			• Tabela mestre - Garante que transações iniciadas, mas não concluídas, relacionadas ao registro mestre não existam. Esse tipo de transação pode deixar o sistema em um estado inconsistente ou causar problemas no processamento de transações. O gatilho exclui todas as informações subsidiárias para o registro mestre, incluindo dimensões padrão e quaisquer documentos e transações em aberto.
+			• Tabela suplementar - Exclui todas as informações subsidiárias para o registro suplementar.
+			• Tabela de diário - Garante que a exclusão não viole as regras de negócios para o tipo específico de diário.
+			• Tabela de documento (cabeçalho) - Garante que a exclusão não viole quaisquer regras de negócios para o documento específico e exclui todas as linhas do documento e informações subsidiárias do documento.
+			• Tabela de documento (linha) - Garante que a exclusão não viole quaisquer regras de negócios para o documento específico e exclui todas as informações subsidiárias da linha de documento.
+			• Tabela de histórico de documento (cabeçalho) - Garante que as condições sob as quais um documento lançado pode ser excluído sejam atendidas e, em seguida, exclui as linhas de documento lançadas e quaisquer informações subsidiárias de documento lançado.
+			• Tabela de histórico de documento (linha) - Exclui qualquer informação subsidiária de linha de documento lançado. Não verifica se as condições para a exclusão são atendidas porque os usuários nunca podem excluir diretamente uma linha de histórico de documento.
+
+	• **OnValidate trigger**
+		• O gatilho OnValidate do campo é acionado depois que o usuário insere um valor em um campo. O código neste gatilho é executado depois que a aplicação executa um comportamento padrão de validação, como validação de tipo de dados.
+		• Este gatilho é frequentemente definido nos campos que se relacionam com outras tabelas, como tabelas mestras, tabelas subsidiárias e tabelas suplementares. Quando definido em tais campos, o gatilho frequentemente executa as seguintes operações importantes:
+			• Atribui as dimensões padrão, se aplicável.
+			• Atribui valores padrão a outros campos.
+			• Valida quaisquer regras de negócios complexas específicas do caso.
+
+
+
+- Adopt the standard data flow
+________________________________________________________________________________________________________________
+
+
+https://learn.microsoft.com/en-us/training/modules/implement-data-process-model-business-central/4-standard-data-flow
+
+
+- Adopt the standard data flow
+________________________________________________________________________________________________________________

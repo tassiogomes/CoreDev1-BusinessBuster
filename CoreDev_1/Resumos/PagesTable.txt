@@ -1,0 +1,218 @@
+Pages table
+________________________________________________________________________________________________________________
+
+
+        • Uma Page é um tipo de objeto que você pode usar para exibir e organizar dados. Pages são a principal forma de exibir dados no cliente do Business Central.
+
+        • Existem vários tipos de pages, cada uma com seu próprio propósito e layout. Aqui estão alguns exemplos:
+
+        	- RoleCenter: Esta é a página inicial para um perfil de usuário específico, fornecendo uma visão geral do desempenho do negócio.
+        	- Card: Usada para gerenciar dados mestre, de referência e de configuração.
+        	- Document: Usada para gerenciar transações e outros documentos.
+        	- List: Fornece uma visão geral das entidades e permite a edição inline de entidades simples.
+        	- Worksheet: Usada para tarefas de entrada de dados baseadas em linhas (como diários) e consultas.
+        	- StandardDialog: Um diálogo rotineiro que inicia ou progride uma tarefa.
+        	- ConfirmationDialog: Um diálogo confirmativo ou excepcional, como avisos.
+        	- NavigatePage: Um diálogo de múltiplas etapas (também conhecido como "Wizard").
+
+
+        • Ao criar uma nova page ou estender uma existente, você adiciona um novo arquivo .al ao seu projeto e descreve o objeto page em código. Para uma nova page, você precisa definir toda a page, enquanto ao modificar uma existente, você apenas adiciona a funcionalidade extra ou modifica a existente.
+        • Uma page é composta por Content + Actions + FactBoxes:
+
+
+	
+Propriedades
+________________________________________________________________________________________________________________
+
+
+page 50102 "Convertible List"
+{
+    PageType = List;  						// Define que a página é do tipo Lista.
+    ApplicationArea = All;  					// Disponível em todas as áreas de aplicação.
+    UsageCategory = Lists;  					// Categoria de uso para tornar a página pesquisável.
+    SourceTable = Car;  					// Define a tabela de origem dos dados.
+    SourceTableView = where(Type = const(Convertible));  	// Filtra os dados para mostrar apenas carros do tipo "Convertible".
+    Editable = false;  // Impede edição direta na lista.
+    Caption = 'Convertible List';  				// Título da página.
+    InsertAllowed = false;  					// Impede inserções.
+    ModifyAllowed = true;  					// Permite modificações.
+    DeleteAllowed = false;  					// Impede deleções.
+    DataAccessIntent = ReadOnly;  				// Indica que a página é apenas para leitura.
+
+    layout
+    {
+        area(content)
+        {
+            repeater(Group)  					// Define a área que irá repetir para cada registro, senao fica group.
+            {
+                field("No."; "No.")  				// Campo para exibir o número do carro.
+                {
+                    ApplicationArea = All;
+                }
+                field("Description"; "Description")  		// Campo para exibir a descrição do carro.
+                {
+                    ApplicationArea = All;
+                }
+                field("Type"; "Type")  				// Campo para exibir o tipo do carro (aqui sempre será "Convertible").
+                {
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+}
+
+
+        • references: Define o nome da page, por exemplo, SB1ê2 "Convertible List".
+
+        • PageType: Especifica o tipo da page. Neste caso, List indica que a page é uma lista.
+
+        • ApplicationArea: Define a área de aplicação onde a page será usada, como All.
+
+        • UsageCategory: Determina a categoria de uso da page. Lists indica que a page está categorizada como uma lista.
+
+        • SourceTable:  
+        • SourceTableView: Define uma visualização específica da tabela fonte. No exemplo, where(Type = const(ConvertibIe)) filtra os dados para mostrar apenas registros onde o campo Type é "Convertible".
+
+        • Editable: Define se os dados na page podem ser editados. false indica que os dados não são editáveis.
+
+        • Caption: Especifica o título da page que será exibido ao usuário, como 'Convertible List'.
+
+        • InsertAllowed, ModifyAllowed e DeleteAllowed
+            - Se você deseja que seus usuários possam modificar dados, mas não inserir ou deletar novos dados, você pode usar as propriedades InsertAllowed, ModifyAllowed e DeleteAllowed.
+            - Um exemplo típico é uma página de configuração no Business Central.
+            - Em uma tabela de configuração, você só permite um registro; assim, você não quer que seus usuários possam inserir novos registros ou deletar o registro existente.
+            - Portanto, você deve definir InsertAllowed e DeleteAllowed como No, e ModifyAllowed como Yes, porque você quer que seus usuários possam alterar os dados de configuração.
+            - O valor padrão para essas propriedades é Yes.
+
+        • DataAccessIntent
+            - Os objetos Page, Report e Query têm uma nova propriedade chamada DataAccessIntent que pode assumir os valores ReadOnly ou ReadWrite.
+            - Essa propriedade funciona como uma dica para o servidor, que se conectará à réplica secundária, se possível.
+            - Quando uma carga de trabalho é executada contra a réplica, operações de inserção/deleção/modificação não são possíveis, então uma nova validação é introduzida para objetos ReadOnly. Qualquer uma dessas operações lançará uma exceção em tempo de execução.
+            
+            • DataAccessIntent tem os seguintes valores possíveis:
+                - ReadOnly - Intenção de acessar registros, mas não modificá-los. Páginas de somente leitura são executadas contra uma réplica do banco de dados, levando a um desempenho melhorado, mas impedindo modificações nos registros do banco de dados.
+                - ReadWrite - Intenção de acessar e modificar registros.
+
+            • Para relatórios, páginas de API e consultas, o servidor do Business Central pode usar réplicas de banco de dados de somente leitura no Azure SQL Database e SQL Server.
+            • Se réplicas estiverem habilitadas, use esta propriedade para reduzir a carga no banco de dados principal. Usar ReadOnly também pode melhorar o desempenho ao visualizar objetos.
+            • ReadOnly funciona como uma dica para o servidor encaminhar a conexão para uma réplica secundária (somente leitura), se houver uma disponível.
+            • Quando uma carga de trabalho é executada contra a réplica, operações de inserção/deleção/modificação não são possíveis. Se alguma dessas operações for executada contra a réplica, uma exceção será lançada em tempo de execução.
+
+
+
+        • Repeater - útil para visualizar e interagir com uma coleção de registros de páginas do tipo List.
+		- Exibir múltiplos registros: O repeater é ideal para exibir uma lista de registros onde cada registro ocupa uma linha na tabela.
+		- Layout em grade: Ele organiza os campos em colunas, permitindo que os usuários visualizem e comparem rapidamente os dados entre diferentes registros.
+
+
+
+
+
+Snippets
+________________________________________________________________________________________________________________
+
+
+	• Nome.Page.al - nomemclatura para criar um arquivo page.
+	• tpage - atalho para criar uma nova page, existem vários tipos, card, lists etc.
+	• tpagefield - cria uma field dentro do layout/area/group.
+	•
+
+
+
+
+Notas
+________________________________________________________________________________________________________________
+
+        • ApplicationArea:
+
+            - Definição: Propriedade utilizada em páginas, campos, partes e ações para controlar a visibilidade com base na área de aplicação do usuário final (Basic, Suit, Essentials ou Premium). 
+            - Formato: Texto contendo uma lista separada por vírgulas de tags de área de aplicação (por exemplo, Basic, Suite).
+            - Utilização: Define quais controles serão exibidos dependendo da licença do usuário e pode ser herdada por controles filhos se não explicitamente definida.
+        
+        • UsageCategory:
+
+            - Definição: Propriedade obrigatória usada junto com ApplicationArea para tornar uma página ou relatório pesquisável no recurso "Tell me" do Business Central.
+            - Funcionalidade: Facilita a descoberta de páginas e relatórios por meio de termos de pesquisa adicionais especificados na propriedade AdditionalSearchTerms.
+            - Exemplo: Uma página de lista pode ser configurada com UsageCategory = Lists para ser encontrada facilmente pelos usuários no Tell me, além de especificar termos adicionais como 'produto' e 'mercadoria' para melhorar a pesquisa.
+
+
+	• Always use the Rec. prefix when adding fields on Pages!
+	• Always use the Rec. prefix when you reference a procedure from the SourceTable of a page.
+	
+	• Não há DataClassification em pages, só em tables.
+
+
+
+
+
+Tipos de páginas principais
+________________________________________________________________________________________________________________
+
+        • Os dois principais tipos de páginas
+
+            •  Existem duas formas principais: orientada a entidade (típico para o tipo de página Card) e orientada a coleção (típico para o tipo de página List).
+
+            • Tipos de páginas orientadas a entidade
+                • Card, Document e ListPlus
+                • As páginas orientadas a entidade têm ações (no topo e na barra de ações) que afetam a entidade ou o contexto dado pelo título da página.
+                • Páginas orientadas a entidade suportam usuários em tarefas que envolvem uma única entidade de negócio.
+                • A página Card fornece detalhes sobre um único cliente ou outros dados mestre.
+                • A página Document representa uma única transação ou outro evento importante de negócio.
+                • ListPlus é um tipo de página orientada a entidade com uma ListPart proeminente e poucos ou nenhum campo de cabeçalho.
+                • CardPart é um tipo de página orientada a entidade para inclusão em outra página, como em um FactBox.
+                • Não use um grupo Repeater em páginas orientadas a entidade para evitar problemas com funcionalidades e dimensionamento.
+                • Páginas orientadas a entidade podem incorporar uma página de parte ListPart que contém um controle Repeater.
+
+            • Tipos de páginas orientadas a coleção
+                • List e Worksheet
+                • As páginas orientadas a coleção fornecem ações na barra de ações (e no menu de ações das linhas) que afetam as linhas selecionadas na coleção.
+                • Páginas orientadas a coleção suportam usuários em tarefas que envolvem múltiplas entidades ou registros ao mesmo tempo.
+                • A página List mostra múltiplos clientes, itens, etc., permitindo que o usuário selecione entidades para trabalhar.
+                • A página Worksheet é adequada para entrada de dados (como em páginas de diário) e outras tarefas relacionadas à gestão de um conjunto de entidades/entradas.
+                • ListPart é um tipo de página orientada a coleção para inclusão em outra página, como em um FactBox.
+
+
+
+
+Layout
+________________________________________________________________________________________________________________
+
+
+
+        • Uma página é Content Area + Actions + FactBoxes
+
+            • Para todas as páginas (excluindo RoleCenter, diálogos e páginas de partes), há uma estrutura comum para as áreas de uma página onde conteúdo, FactBoxes e ações podem ser exibidos.
+
+            • Containers.
+
+                - A Content Area fornece capacidades ricas de layout, que serão descritas nas seções seguintes.     
+                - A área de FactBoxes é limitada a mostrar uma lista de partes, geralmente em uma disposição vertical.
+                - O header consiste no título, barra de ações e controles para filtragem, visualizações, etc.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

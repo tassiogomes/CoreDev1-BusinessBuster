@@ -1,0 +1,48 @@
+Master table
+________________________________________________________________________________________________________________
+
+
+
+		• Ctrl + Shift + p - abre a pesquisa.
+		• AL: GO! - cria uma nova app.
+		• Microsoft cloud Sandbox - entrar com credenciais e vai fazer o link com seus environments 365.
+		• launch.json - arquivo de configuração que conecta com seu sandbox.
+		• "environmentName": "sandbox" - colocar o nome do ennviromente no arquivo launch (que é de configuração).
+		• tenant: "ciellostassiogomes.onmicrosoft.com" - criar esse parâmetro com o domínio,
+		• AL: Download symbols - faz download de todas as tabelas padrão do BC.
+		• AL: Explorer - Abre uma janela onde se pode explorar todos os objetos BC.
+
+
+		• App.json - é a sua app enquanto o launch é a sua configuração, não tem nada a ver.
+		• idRange - número que você cria uma extensão tem que estar nesse range.
+		• CustomerList.PageExt.al - objectname.objecttype.al padrão para nomear o arquivo e o nome do objeto.
+		• Um file pode ter vários objetos, mas o ideal é ter só um por file.	
+
+
+		• ttable - comando para criar uma tabela nova, renomear como acima.
+		• caption - ao criar um field novo, tem que usar o caption, que é o que será mostrado na user interface.
+		• DataClassification - é usado para efeitos de proteção e RGPD, os comuns são:
+			- ToBeClassified: Indica que o dado ainda precisa ser classificado.
+			- CustomerContent: Dados inseridos pelo cliente.
+			- SystemMetadata: Dados de sistema, metadados.
+			- EndUserIdentifiableInformation (EUII): Informações que podem identificar diretamente um usuário final.
+			- AccountData: Dados relacionados a contas.
+			- Confidential: Dados confidenciais que requerem proteção especial.
+
+		• Primary Key - usar um dos campos introduzidos nos fields nos campos Keys e colocar como Clustered = true
+			-     keys
+    				{
+        			key(PK; "No.")
+        				{
+            				Clustered = true;
+        				}
+    				}
+
+
+		• DrillDownPageID e LookupPageID - para criar essas duas propriedades, tem que haver um arquivo de lista, não só o da tabela.
+
+
+
+
+Pages table
+________________________________________________________________________________________________________________

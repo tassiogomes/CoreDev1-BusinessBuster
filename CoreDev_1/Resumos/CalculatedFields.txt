@@ -1,0 +1,61 @@
+Calculated Fields or Special Fields in BC
+________________________________________________________________________________________________________________
+
+        • FlowFields exibem o resultado de um cálculo descrito na propriedade CalcFormula.
+            - Exemplo: O campo Account Balance na tabela General Ledger Account mostra o saldo da conta, calculado como a soma dos campos NetAmount para todas as entradas no General Journal.
+
+        • Aumentam o desempenho ao calcular resultados como o saldo dos clientes.
+            - Otimização adicional é possível ativando ou desativando SIFT (SumIndexField Technology).
+
+        • FlowFields não são campos físicos armazenados no banco de dados.
+            - São descrições de cálculos e locais para exibição dos resultados.
+            - Valores em FlowFields são inicializados automaticamente para 0 (zero).
+            - Para atualizar um FlowField, use o método CalcFields (Record).
+            - Se um FlowField for a expressão fonte direta de um controle em uma página, ele é calculado automaticamente quando a página é exibida.
+
+
+Tipos de Calculated Fields
+________________________________________________________________________________________________________________
+
+
+        • Existem sete tipos de FlowFields:
+            - Sum: Decimal, Integer, BigInteger, ou Duration. Soma de um conjunto específico em uma coluna de uma tabela.
+            - Average: Decimal, Integer, BigInteger, ou Duration. Valor médio de um conjunto específico em uma coluna de uma tabela.
+            - Exist: Boolean. Indica se algum registro existe em um conjunto específico em uma tabela.
+            - Count: Integer. Número de registros em um conjunto específico em uma tabela.
+            - Min: Qualquer tipo. Valor mínimo em uma coluna em um conjunto específico em uma tabela.
+            - Max: Qualquer tipo. Valor máximo em uma coluna em um conjunto específico em uma tabela.
+            - Lookup: Qualquer tipo. Pesquisa um valor em uma coluna em outra tabela.
+
+
+        
+
+Propriedades
+________________________________________________________________________________________________________________
+
+	• FieldClass
+        	A FieldClass define a finalidade e o comportamento de um campo em uma tabela. Existem várias classes de campos que podem ser definidas:
+
+            - Normal: O campo é um campo normal armazenado no banco de dados.
+            - FlowField: O campo é um FlowField, que é calculado em tempo de execução com base em uma fórmula.
+            - FlowFilter: O campo é um FlowFilter, usado para definir filtros que afetam os FlowFields.
+            - Blob: O campo armazena dados binários grandes (Binary Large Object).
+
+
+Notas
+________________________________________________________________________________________________________________
+
+
+	• Editable = false - recomendável deixar a false os flowfields
+	• Quando se cria um flowfiel numa lista linkada a outra tabela, é necessário mudar a ListPage e a Table, pra isso, modifica os dois objetos
+	pra isso, se cria a Page Extension e a List Extension
+
+
+
+
+Table Extension
+________________________________________________________________________________________________________________
+
+	
+	• ttableext - snippet para abrir o modelo de table extension
+	• tpageext - snippet para abrir o modelo de page extension

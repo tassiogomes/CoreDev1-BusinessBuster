@@ -1,0 +1,608 @@
+Master table
+________________________________________________________________________________________________________________
+
+
+		• Master Table
+			• Contém informações sobre o assunto da área de aplicação (ex.: tabela Cliente).
+			• Relacionada a todas as tabelas transacionais na área de aplicação.
+			• Relacionada a pelo menos uma tabela de razão.
+			• Frequentemente contém muitos FlowFilters e FlowFields.
+
+		• Nomes
+			• Nome relacionado aos registros da tabela (ex.: Cliente).
+
+		• Chave Primária e Outros Campos Padrão:
+			• Chave primária: campo "No." do tipo Code (20 caracteres).
+			• Campo de descrição: "Name" ou "Description" (tipo Text, 100 caracteres).
+			• Campos "No." e "Name" sempre incluídos na propriedade DataCaptionFields.
+			• Campo "Blocked" indica se um registro mestre pode ser usado em transações; pode ser Boolean ou Option.
+
+		• Páginas Associadas:
+			• **Card page:** Para visualizar e editar registros individuais.
+			• **List page:** Para visualizar múltiplos registros; não permite edição.
+			• **Statistics page:** Para visualizar informações calculadas sobre um registro.
+
+		Exemplo de Tabela Cliente:
+		table 18 Customer
+		{
+		    Caption = 'Customer';
+		    DataCaptionFields = "No.", Name;
+		    DrillDownPageID = "Customer List";
+		    LookupPageID = "Customer List";
+
+		    fields
+		    {
+		        field(1; "No."; Code[20])
+		        {
+		        }
+		        field(2; Name; Text[100])
+		        {
+		        }
+		        ...
+		        field(39; Blocked; Option)
+		        {
+		            OptionMembers = " ",Ship,Invoice,All;
+		        }
+		        ...
+		    }
+		    keys
+		    {
+		        key(Key1; "No.")
+		        {
+		            Clustered = true;
+		        }
+		    }
+		}
+
+
+- Suplemental Tables
+________________________________________________________________________________________________________________
+
+
+		• **Tabela Suplementar:**
+			• Contém informações sobre um assunto suplementar usado em uma ou mais áreas de aplicação (ex.: tabela Moeda).
+			• Importante, mas não é o foco principal de nenhuma área de aplicação.
+
+		• **Campos Padrão em Tabelas Suplementares:**
+			• Contém conjuntos de valores padrão aplicados automaticamente a outros tipos de registros, como registros mestre.
+			• Exemplo: a tabela Categoria de Item contém campos padrão:
+				• Def. Gen. Prod. Posting Group
+				• Def. Inventory Posting Group
+				• Def. Tax Group Code
+				• Def. Costing Method
+				• Def. VAT Prod. Posting Group
+
+		• **Nomes das Tabelas Suplementares:**
+			• Nome relacionado a um dos registros na tabela (ex.: tabela Moeda).
+
+		• **Chave Primária e Outros Campos Padrão:**
+			• Chave primária: campo "Code" do tipo Code (10 caracteres).
+			• Campo de descrição: "Description" do tipo Text (50 caracteres).
+			• Algumas tabelas suplementares usam "Name" em vez de "Description".
+
+		• **Páginas Associadas:**
+			• Página associada é uma página de lista, com poucas ou nenhuma ação.
+			• Nome da página é o plural do nome da tabela suplementar (ex.: página Currencies para a tabela Currency).
+			• Página é definida como a propriedade LookupPageID da tabela.
+
+
+- Subsidiaryu Tables
+________________________________________________________________________________________________________________
+
+
+		• **Tabela Subsidiária:**
+			• Contém informações adicionais sobre uma tabela mestre ou uma tabela suplementar.
+			• Exemplo: a tabela Item Vendor contém informações adicionais (números de fornecedor) para a tabela Item na área de aplicação de inventário.
+
+		• **Nomes das Tabelas Subsidiárias:**
+			• Geralmente consiste nos nomes das tabelas para as quais é subsidiária ou uma aproximação próxima.
+			• Nome geralmente é singular e descreve um registro contido na tabela (ex.: tabela Item Vendor).
+
+		• **Chave Primária e Outros Campos Padrão:**
+			• Chave primária contém um campo para cada tabela para a qual é subsidiária.
+			• Exemplo: a chave primária da tabela Item Vendor consiste no campo Item No. (relacionado à tabela Item) e no campo Vendor No. (relacionado à tabela Vendor).
+			• Ocasionalmente, pode conter um campo inteiro (Line No.) para diferenciar múltiplos registros com o mesmo relacionamento subsidiário.
+
+		• **Páginas Associadas:**
+			• Usa uma página para fins de edição e visualização.
+			• Nome da página geralmente é o plural do nome da tabela (ex.: Employee Qualifications) ou relacionado às informações na tabela subsidiária (ex.: Item Vendor Catalog).
+			• Página pode ser uma página de planilha ou uma página de lista, dependendo da presença de um campo inteiro na chave primária.
+
+
+- Ledger Tables
+________________________________________________________________________________________________________________
+
+
+
+		• Ledger Tables
+			• Contém informações transacionais que são o foco principal de sua área de aplicação.
+			• Exemplo: a tabela Cust. Ledger Entry contém todas as informações de transação que são o foco principal da área de vendas e recebíveis.
+
+		• **Características das Tabelas de Razão:**
+			• Relacionadas às tabelas mestre correspondentes, mas com características diferentes.
+			• Relacionadas a muitas outras tabelas, principalmente tabelas suplementares.
+			• Registros de tabelas são relacionados às tabelas de registro, mas normalmente nenhuma outra tabela se relaciona diretamente com uma tabela de razão.
+
+		• **Nomes das Ledger Tables**
+			• Geralmente o nome da tabela mestre associada seguido de "ledger entry" (entrada de razão).
+			• Exemplo: a tabela de entrada de razão do cliente é denominada Cust. Ledger Entry.
+
+		• **Chave Primária e Outros Campos Padrão:**
+			• Chave primária: campo "Entry No." do tipo Integer, gerado automaticamente pelo sistema de lançamento.
+			• Campo de descrição: campo "Description" do tipo Text (100 caracteres).
+			• Tabelas de razão geralmente possuem várias chaves secundárias para cálculos e relatórios.
+
+		• **Páginas Associadas:**
+			• Usa uma página de lista para visualizar os registros na tabela de razão.
+			• Nome da página é o plural do nome da tabela de razão (ex.: Customer Ledger Entries).
+			• Página é definida como a propriedade LookupPageID e DrillDownPageID da tabela para visualização, pesquisa e drilldown.
+
+        table 21 "Cust. Ledger Entry"
+        {
+            Caption = 'Cust. Ledger Entry';
+            DrillDownPageID = "Customer Ledger Entries";
+            LookupPageID = "Customer Ledger Entries";
+
+            fields
+            {
+                field(1; "Entry No."; Integer)
+                {
+                }
+                field(3; "Customer No."; Code[20])
+                {
+                    TableRelation = Customer;
+                }
+                field(4; "Posting Date"; Date)
+                {
+                }
+                field(5; "Document Type"; Option)
+                {
+                }
+                field(6; "Document No."; Code[20])
+                {
+                }
+                field(7; Description; Text[100])
+                {
+                }
+                field(8; "Customer Name"; Text[100])
+                {
+                }
+                ...
+            }
+            keys
+            {
+                key(Key1; "Entry No.")
+                {
+                    Clustered = true;
+                }
+            }
+        }
+
+
+
+- Register Tables
+________________________________________________________________________________________________________________
+
+
+	• Register Tables
+		• É um índice para a tabela ou tabelas de razão correspondentes.
+		• Existe um registro para cada processo de lançamento. A tabela de registro está mais próxima da rotina de lançamento do que da área de aplicação.
+
+	• **Exemplo de Tabela de Registro:**
+		• A tabela que contém a lista de entradas feitas na tabela Cust. Ledger Entry é a tabela G/L Register, pois as entradas do razão do cliente são lançadas a partir do Diário Geral usando os procedimentos de lançamento do razão geral. A tabela de registro está relacionada à tabela ou tabelas de razão correspondentes.
+
+	• **Nomes das Tabelas de Registro:**
+		• As tabelas de registro são nomeadas de acordo com a função de lançamento seguida da palavra "register" (registro). Portanto, a tabela de registro atualizada pela função de lançamento do razão geral é denominada G/L Register. Os usuários não podem alterar a tabela de registro.
+
+	• **Chave Primária e Outros Campos Padrão:**
+		• A chave primária de uma tabela de registro é um campo inteiro denominado No. Esta chave é sempre incrementada automaticamente por um procedimento de lançamento que controla o registro.
+		• Outros campos padrão incluem From Entry No. e To Entry No. - Campos inteiros relacionados à tabela de razão correspondente.
+		• Creation Date - Campo que especifica a data em que a transação foi lançada.
+		• User ID - Campo que especifica qual usuário lançou a transação.
+		• Source Code - Campo que indica a origem da transação.
+		• Journal Batch Name - Campo que indica o diário a partir do qual a transação foi lançada.
+		• Tabelas de registro geralmente não possuem campos de descrição.
+
+	• **Páginas Associadas:**
+		• Usa uma página de lista para visualizar os registros na tabela de registro.
+		• O nome da página é o plural do nome da tabela de registro. Portanto, a página usada para exibir registros da tabela G/L Register é denominada G/L Registers.
+		• A página de lista contém links de ação para outras páginas de lista que exibem as entradas correspondentes do razão.
+
+	• **Exemplo de Tabela G/L Register:**
+
+		table 45 G/L Register
+		{
+		    Caption = 'G/L Register';
+		    LookupPageID = "G/L Registers";
+
+		    fields
+		    {
+		        field(1; "No."; Integer)
+		        {
+		        }
+		        field(2; "From Entry No."; Integer)
+		        {
+		            TableRelation = "G/L Entry";
+		        }
+		        field(3; "To Entry No."; Integer)
+		        {
+		            TableRelation = "G/L Entry";
+		        }
+		        field(4; "Creation Date"; Date)
+		        {
+		        }
+		        field(5; "Source Code"; Code[10])
+		        {
+		            TableRelation = "Source Code";
+		        }
+		        field(6; "User ID"; Code[50])
+		        {
+		        }
+		        field(7; "Journal Batch Name"; Code[10])
+		        {
+		        }
+		        ...
+		    }
+		    keys
+		    {
+		        key(Key1; "No.")
+		        {
+		            Clustered = true;
+		        }
+		    }
+		}
+
+
+
+- Journal Tables
+________________________________________________________________________________________________________________
+
+
+
+	• Journal Tables
+		• Habilita a entrada de transações para uma área de aplicação.
+		• Todas as transações, se inseridas diretamente pelo usuário ou geradas por outra rotina de lançamento, passam por uma tabela de diário para serem eventualmente lançadas em uma tabela de razão.
+		• As tabelas de diário são relacionadas a muitas outras tabelas, incluindo tabelas mestre, tabelas suplementares, tabelas subsidiárias e às vezes tabelas de razão correspondentes.
+		• Devido ao uso em entradas de transação, as tabelas de diário têm mais códigos de gatilho para validar dados do que a maioria dos outros tipos de tabelas.
+
+	• **Exemplo de Journal Tables:**
+		• A tabela onde os usuários inserem transações para a área de Recursos é denominada Res. Journal Line. Cada registro em uma tabela de diário contém uma linha do diário correspondente.
+
+	• **Nomes das Tabelas de Diário:**
+		• As tabelas de diário são nomeadas de acordo com a transação que está sendo lançada, seguida pelas palavras "journal line". Por exemplo, a tabela onde os usuários inserem transações para a área de Recursos é denominada Res. Journal Line.
+
+	• **Chave Primária e Outros Campos Padrão:**
+		• A chave primária de uma tabela de diário consiste em três campos:
+
+		table 207 "Res. Journal Line"
+		{
+		    Caption = 'Res. Journal Line';
+
+		    fields
+		    {
+		        field(1; "Journal Template Name"; Code[10])
+		        {
+		            TableRelation = "Res. Journal Template";
+		        }
+		        field(2; "Line No."; Integer)
+		        {
+		        }
+		        field(3; "Entry Type"; Option)
+		        {
+		        }
+		        field(4; "Document No."; Code[20])
+		        {
+		        }
+		        field(5; "Posting Date"; Date)
+		        {
+		        }
+		        ...
+		        field(8; Description; Text[100])
+		        {
+		        }
+		        ...
+		        field(23; "Journal Batch Name"; Code[10])
+		        {
+		            TableRelation = "Res. Journal Batch".Name 
+		                            where("Journal Template Name" = 
+		                                  field("Journal Template Name"));
+		        }
+		        ...
+		    }
+		    keys
+		    {
+		        key(Key1; "Journal Template Name", "Journal Batch Name", "Line No.")
+		        {
+		            Clustered = true;
+		        }
+		    }
+		}
+
+
+
+
+
+- Document Tables
+________________________________________________________________________________________________________________
+
+
+	• Document Tables
+		• São tabelas secundárias de transação que permitem entradas para uma ou várias áreas de aplicação ao mesmo tempo. Elas são secundárias apenas no sentido de que suas informações são lançadas nos razões através das tabelas de lançamento (journals), em vez de serem lançadas diretamente. Para a maioria dos usuários, as tabelas de documento são o principal meio de entrada de uma transação.
+
+	• **Tipos de Tabelas de Documento:**
+		• **Documento Header:**
+			• Contém as principais informações da transação que se aplicam a todas as linhas no documento. Por exemplo, para uma transação de vendas, a tabela Sales Header contém informações principais sobre pedidos ou faturas, como o cliente ao qual o pedido ou fatura pertence, datas de lançamento, informações de envio e informações similares que se aplicam a todas as linhas do documento.
+		
+		• **Documento Line:**
+			• Contém informações detalhadas para a transação. Por exemplo, para uma transação de vendas, a tabela Sales Line contém informações sobre cada linha do pedido ou fatura. É uma tabela subsidiária da tabela de cabeçalho do documento.
+
+	• **Nomes das Tabelas de Documento:**
+		• O nome de uma tabela de cabeçalho de documento é o nome da transação ou documento seguido da palavra "header". Por exemplo, a tabela de cabeçalho de documento que contém transações de vendas é nomeada Sales Header. Cada registro contém uma venda, como um pedido ou fatura.
+
+		• O nome de uma tabela de linha de documento é o nome da transação ou documento seguido da palavra "line". Por exemplo, a tabela de linha de documento que contém transações de vendas é nomeada Sales Line. Cada registro contém uma linha de uma venda, como um pedido ou fatura.
+
+	• **Chave Primária e Outros Campos Padrão:**
+		• Para a maioria das tabelas de cabeçalho de documento, a chave primária é um campo do tipo Código, chamado No., com comprimento de 20 caracteres, que contém o número do documento. Algumas tabelas de cabeçalho de documento contêm vários tipos de documentos. Nestes casos, a chave primária tem dois campos:
+			• Document Type - campo de Opção
+			• No. - campo Código de comprimento 20
+
+		• Para a maioria das tabelas de linha de documento, a chave primária tem dois campos:
+			• Um campo do tipo Código de comprimento 20 que contém o número do documento, e
+			• Um campo do tipo Inteiro chamado Line No. O campo Código está relacionado à tabela de cabeçalho do documento e é nomeado de acordo com o nome dessa tabela (sem a palavra "header"), seguido do campo chave primária dessa tabela.
+
+		• Por exemplo, o campo do tipo Código na chave primária da tabela Finance Charge Memo Line é nomeado Finance Charge Memo No.
+
+		• Quando a chave primária da tabela de cabeçalho do documento inclui um tipo de documento, a chave primária da tabela de linha do documento tem os seguintes três campos:
+			• Document Type - campo de Opção
+			• Document No. - campo Código de comprimento 20
+			• Line No. - campo Inteiro
+
+		• O campo Código está relacionado à tabela de cabeçalho do documento.
+
+	• **Páginas Associadas:**
+		• Uma tabela de cabeçalho de documento utiliza uma página do tipo Document para exibir um registro de cabeçalho por vez, permitindo visualizar e editar as informações na tabela de cabeçalho. O nome da página é também o nome do documento que está sendo exibido.
+
+		• Por exemplo, a página que mostra notas fiscais da tabela Sales Header é nomeada Sales Invoice. Este método se aplica mesmo se a tabela contiver vários tipos de documentos, pois, nesse caso, a página é configurada para exibir informações de apenas um tipo. Por exemplo, a página que mostra faturas de vendas da tabela Sales Header é nomeada Sales Invoice.
+
+		• A página contém FastTabs para dividir os campos em grupos lógicos, facilitando a edição das informações. Uma página de documento inclui uma parte da página que mostra as linhas do documento.
+
+		• Uma tabela de linha de documento utiliza uma página ListPart para exibir vários registros de linha por vez. O nome da página é o nome do documento seguido pela palavra "lines" ou "subform". Nenhum dos campos da chave primária está incluído nesta página.
+
+		• Esta página é filtrada usando a propriedade SubPageLink para todos os campos da chave primária, exceto o campo Line No., que é tratado automaticamente pela propriedade AutoSplitKey da página.
+
+		• A tabela de cabeçalho do documento também utiliza uma página de lista para permitir visualizar vários documentos ao mesmo tempo. O nome desta página é o nome da página do documento seguido pela palavra "list". Por exemplo, a página de lista que mostra as faturas de vendas é chamada Sales Invoice List.
+
+		• A página de lista de cabeçalho do documento utiliza a propriedade CardPageID para especificar a página do documento que é mostrada ao visualizar, editar ou criar um novo documento, ou ao clicar duas vezes em um documento na lista.
+
+		• O exemplo a seguir mostra um trecho da tabela Sales Header.
+
+
+	• **Tabelas de Histórico de Documento:**
+		• As tabelas de histórico de documento têm o mesmo relacionamento com as tabelas de documento que as tabelas de razão têm com as tabelas de lançamento. Quando um documento é lançado, parte desse processo de lançamento é copiar as tabelas de documento para suas respectivas tabelas de histórico de documento. Para auxiliar nesse processo de cópia, a tabela de histórico de documento contém campos que têm os mesmos números de campo, nomes e propriedades das tabelas de documento originais.
+
+	• **Características Gerais:**
+		• Geralmente, porque as tabelas de histórico de documento registram transações lançadas, elas não podem ser editadas pelo usuário. No entanto, podem ser excluídas em circunstâncias específicas. Por exemplo, você pode excluir uma fatura de vendas lançada se ela foi impressa. Exceto por essas poucas distinções, as tabelas e páginas de histórico de documento são iguais às tabelas e páginas de documento.
+
+
+
+
+
+        •       The following example shows a snippet of the Sales Header table.
+
+	al-language
+
+
+        table 36 "Sales Header"
+        {
+            Caption = 'Sales Header';
+            DataCaptionFields = "No.", "Sell-to Customer Name";
+            LookupPageID = "Sales List";
+
+            fields
+            {
+                field(1; "Document Type"; Option)
+                {
+                   OptionMembers = Quote,"Order",Invoice,"Credit Memo","Blanket Order",
+                                   "Return Order";
+                }
+                field(2; "Sell-to Customer No."; Code[20])
+                {
+                    TableRelation = Customer;
+                }
+                field(3; "No."; Code[20])
+                {
+                }
+                field(4; "Bill-to Customer No."; Code[20])
+                {
+                    TableRelation = Customer;
+                }
+                ...
+            }
+            keys
+            {
+                key(Key1; "Document Type", "No.")
+                {
+                    Clustered = true;
+                }
+            }
+        }
+
+
+
+        •       The following example shows a snippet of the Sales Line table.
+
+	al-language
+
+        table 37 "Sales Line"
+        {
+            Caption = 'Sales Line';
+            DrillDownPageID = "Sales Lines";
+            LookupPageID = "Sales Lines";
+
+            fields
+            {
+                field(1; "Document Type"; Option)
+                {
+                    OptionMembers = Quote,"Order",Invoice,"Credit Memo","Blanket Order",
+                                    "Return Order";
+                }
+                field(2; "Sell-to Customer No."; Code[20])
+                {
+                    TableRelation = Customer;
+                }
+                field(3; "Document No."; Code[20])
+                {
+                    TableRelation = "Sales Header"."No." 
+                                    where("Document Type" = field("Document Type"));
+                }
+                field(4; "Line No."; Integer)
+                {
+                }
+                field(5; Type; Option)
+                {
+                    OptionMembers = " ","G/L Account",Item,Resource,"Fixed Asset",
+                                    "Charge (Item)";
+                }
+                field(6; "No."; Code[20])
+                {
+                    TableRelation = if (Type = Const(" ")) "Standard Text"
+                    else
+                    if (Type = Const("G/L Account") "G/L Account" 
+                    else
+                    if (Type = Const(Resource)) Resource
+                    else
+                    if (Type = Const("Fixed Asset")) "Fixed Asset"
+                    else
+                    if (Type = Const("Charge (Item)")) "Item Charge"
+                    else
+                    if (Type = Const(Item) Item; 
+                }
+                ...
+                field(11; Description; Text[100])
+                {            
+                }
+                ...
+            }
+            keys
+            {
+                key(Key1; "Document Type", "Document No.", "Line No.")
+                {
+                    Clustered = true;
+                }
+            }
+        }
+
+
+
+
+
+
+- Setup Tables
+________________________________________________________________________________________________________________
+
+
+
+        • **Create setup tables**
+            • Cada área de aplicação possui sua própria tabela de configuração. Essas tabelas de configuração contêm apenas um registro que contém campos para selecionar opções para a área de aplicação ou para manter dados que se aplicam à empresa como um todo. Nenhuma tabela está relacionada às tabelas de configuração; embora, as tabelas de configuração sejam frequentemente relacionadas a outras tabelas e tipicamente a tabelas suplementares.
+
+        • **Nomes das tabelas de configuração**
+            • O nome de uma tabela de configuração é geralmente o nome da área de aplicação que ela configura seguido da palavra "setup". Por exemplo, a tabela que contém informações de configuração para a área de contabilidade geral é denominada Configuração de Contabilidade Geral. Uma exceção a essa regra é a tabela Informações da Empresa.
+
+        • **Chave primária e outros campos padrão**
+            • A chave primária para uma tabela de configuração é um campo do tipo Code com comprimento de 10 caracteres chamado Chave Primária. A chave primária sempre é deixada em branco porque apenas um registro por tabela é permitido. Tabelas de configuração não têm um campo de descrição.
+
+        • **Página de configuração associada**
+            • Apenas uma página é usada para tabelas de configuração, e é do tipo Card. A página tem o mesmo nome que a tabela e o campo de chave primária não é incluído.
+            • A página permite modificar informações, mas não permite inserir ou excluir registros. Se um registro não estiver na tabela subjacente nesta página, o código no gatilho OnOpenPage insere um registro.
+
+        • **Não todas as tabelas com o termo setup em seus nomes são tabelas de configuração**
+            • Algumas tabelas que têm mais de um registro contêm a palavra setup em seus nomes. Geralmente, essas tabelas seguem as regras das tabelas subsidiárias, conforme descrito anteriormente, e não seguem as regras descritas nesta seção.
+
+	table 311 "Sales & Receivables Setup"
+{
+    Caption = 'Sales & Receivables Setup';
+    DrillDownPageID = "Sales & Receivables Setup";
+    LookupPageID = "Sales & Receivables Setup";
+
+    fields
+    {
+        field(1; "Primary Key"; Code[10])
+        {
+        }
+        field(2; "Discount Posting"; Option)
+        {
+            OptionMembers = "No Discounts","Invoice Discounts","Line Discounts",
+                            "All Discounts";
+        }
+        field(4; "Credit Warnings"; Option)
+        {
+            OptionMembers = "Both Warnings","Credit Limit","Overdue Balance",
+                            "No Warning";
+        }
+        field(5; "Stockout Warning"; Boolean)
+        {
+        }
+        field(6; "Shipment on Invoice"; Boolean)
+        {
+        }
+        field(7; "Invoice Rounding"; Boolean)
+        {
+        }
+        field(8; "Ext. Doc. No. Mandatory"; Boolean)
+        {
+        }
+        field(9; "Customer Nos."; Code[20])
+        {
+            TableRelation = "No. Series";
+        }
+        field(10; "Quote Nos."; Code[20])
+        {
+            TableRelation = "No. Series";
+        }
+        field(11; "Order Nos."; Code[20])
+        {
+            TableRelation = "No. Series";
+        }
+        field(12; "Invoice Nos."; Code[20])
+        {
+            TableRelation = "No. Series";
+        }
+        field(13; "Posted Invoice Nos."; Code[20])
+        {
+            TableRelation = "No. Series";
+        }
+        field(14; "Credit Memo Nos."; Code[20])
+        {
+            TableRelation = "No. Series";
+        }
+        field(15; "Posted Credit Memo Nos."; Code[20])
+        {
+            TableRelation = "No. Series";
+        }
+        field(16; "Posted Shipment Nos."; Code[20])
+        {
+            TableRelation = "No. Series";
+        }
+    }
+    keys
+    {
+        key(Key1; "Primary Key")
+        {
+            Clustered = true;
+        }
+    }
+}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,187 @@
+- The Chicken Management Case
+________________________________________________________________________________________________________________
+
+	• Uma empresa implementou agora o BC e precisa de umas extensões.
+
+
+- The Objects and the Database
+________________________________________________________________________________________________________________
+
+	
+	Here's a list of objects in the AL language for Microsoft Dynamics 365 Business Central:
+	• Tables- These are used to Store data. They contain fields and keys.
+	• Table Extensions. These allow you to add additional fields or change properties on a table.
+	• Pages. Pages are used to display and organize data.
+	• Page Extensions. These allow you to add additional controls to a page or change properties on a page.
+	• Reports Reports are used to process and print data.
+	• Report Extensions_ These allow you to add additional data items or columns to a report-
+	• XMLports. XMLports are used to export or import data in XML or CSV format.
+	• Queries. Queries are used to retrieve specific data from the database_
+	•Codeunits. Codeunits contain AL code that you can use to manipulate data.
+	• Control Add-ins. These are used to add custom controls to pages_
+	• Enumerations (Enums): Enums are used to create a list of constants for use as a field type.
+	• Enumeration Extensions (Enum Extensions): These allow you to add additional options to an existing Enum.
+	• Interfaces. Interfaces define a contract that classes can implement
+	• API Pages and API Queries. are used to expose data through RESTful web services.
+	• Permissions Sets and Permission Set Extensions. These are used to manage user permissions.
+
+
+- BC Structure
+________________________________________________________________________________________________________________
+
+	• Company -> Table -> Record (linha) -> Field (coluna)
+
+
+- Tipos de tabelas
+________________________________________________________________________________________________________________
+
+	• Database tables - Most tables in the database are database tables, which are the type of table that you typically see. You have rights to read and write on database tables. Examples include the customer table, vendor table, and item table.
+
+	• System tables - System tables are unique because these tables and their data are necessary for the system to function. System tables are saved in the database and they have object numbers above two million. Examples include the company table, profile table, and permission table.
+
+	• Virtual tables - You can find the definition of a virtual table in the database, but the data is created at runtime, so it's not stored in the database. You as a developer don't have rights to write to virtual tables. The active session table is an example.
+
+	• Temporary tables - A temporary table only exists in the memory of a client. It keeps an image or a copy of another database table. It has no data and is frequently used in posting routines and document reports.
+
+
+- Aplicação das tabelas
+________________________________________________________________________________________________________________
+
+	• Master tables - Master tables contain information about the most important entities of the module, the primary subjects of its functional area. Examples include the customer, vendor, and item tables.
+
+	• Supplemental tables - Likely, you'll enrich the master data with supplemental data. You can store data that is related to countries/regions, such as country code and description, in supplemental tables. These tables aren't as important as master tables, 	but they store extra information about the master data. Examples are the Currency and Language tables.
+
+	• Setup tables - When you're creating a solution, you probably need configuration for a certain module. You can set up the configuration and organize the data in a setup table. The G/L Setup and Sales & Receivables Setup tables are examples of setup 	tables.
+
+	• Register tables - This type of table functions as a table of contents for its corresponding ledger tables. It registers historical and transactional kinds of information. Examples include the G/L Register and Item Register tables.
+
+	• Subsidiary tables - These tables contain a combination of information from master and/or supplemental tables, like item/vendor information. Examples of this type of table include the Item Vendor and FA Depreciation Book tables.
+
+	• Ledger tables - In ledger tables, you can find the transactional information of the related functional domain. Examples are the Cust. Ledger Entry and Item Ledger Entry tables.
+
+	• Journal tables - All transactions are booked through journals, so it's the primary transactional entry table. Examples are the General Journal table and the Item Journal table.
+
+	• Document tables - When entering transactions, you need documents such as a sales quote and a sales order. Document tables are secondary transactional tables. These tables are always built out of two tables: a table with the header information and a table with 	the line details. For example, the Sales Header and Sales Line tables are examples of document tables. These tables contain information like sales orders and sales quotes.
+
+	• Document history tables - The document history tables are historical versions of the document tables. When you post documents from the document tables, they go through a journal table and then end up in a document history table. The Sales Invoice Header and Sales Invoice Line are examples of document history tables.
+
+
+- Table Structure
+________________________________________________________________________________________________________________
+
+	The structure of a table has four sections.
+	• The first block contains metadata for the overall table 
+		- the table type.
+	• The fields section describes 
+		- the data elements that make up the table
+		- their name and the type of data they can store.
+	• The keys section contains
+		- the definitions of the keys that the table needs to support.
+	• The final section details the triggers
+		- and code that can run on the table.
+
+
+Table and Field Properties and Triggers
+________________________________________________________________________________________________________________
+
+	• Field
+		field(3; "Search Name"; Code[100])	(number, "name", dataType[length 1-250])
+        	{
+            		Caption = 'Search Name';
+        	}
+
+	• Data Type
+
+		| text - Alphanumeric
+		| code - Usado como PK, remove espaços no início e fim, sempre em UPPERCASE.
+		| decimal - 
+		| boolean - 
+
+
+	• Table Keys
+		
+		Todas as tabelas tem chaves que funcionam como index no sql server, sendo no máximo 3 campos por chaves compostas.
+
+			 keys
+    			{
+        				key(PK; "ID")
+        			{
+            					Clustered = true;		- a PK é sempre um índice clusterizado
+        			}
+        				key(SecondaryKey1; "Name")
+        			{
+          					Clustered = false		- cria um índice não-clusterizado
+        			}
+					key(Secondary2, "Surname")
+				{
+				}						- sem nada é mesma coisa que Clustered = false
+        				key(SecondaryKey2; "Date")
+        			{
+            					MaintainSqlIndex = false	- propriedade que não deixa tornar índice no sql server.	
+        			}
+    			}
+
+			- A primeira key é a PK (sempre composta com no máximo 16) e as outras são secundary keys.
+			- As outras são secundárias.
+			- Se não colocar Clustered = false, esse já é o default.
+			- MaintainSqlIndex = false, propriedade que fala ao sql para não criar como index.
+			- Consultar no Helpe me, Table Information e lá há as infos sobre as tabelas.
+
+- Table extension	
+________________________________________________________________________________________________________________
+
+	• A table extension allows you to overwrite some properties on the table and fields. However, the list of properties that can be modified is limited.
+	• Comando ttableext 
+	
+		tableextension 50121 MyBaseTableExt extends MyBaseTable
+		{
+					fields
+					{
+						field(3; MyExtField1; Integer)
+						{
+						}
+						field(4; MyExtField2; Integer)
+						{
+						}
+					}
+
+					keys
+					{
+						key(ExtKey1; MyExtField1) //secondary key
+						{
+						}
+						key(ExtKey2; MyBaseField1, MyBaseField2) //secondary key
+						{
+						}
+						// The following key isn't allowed because it contains fields from the base table and the table extension
+						//key(ExtKey3; MyBaseField1, MyExtField2)
+						//{
+						//}
+					}
+		}
+
+
+
+      • Propriedades limitadas podem ser modificadas usando extensões de tabela:
+        - **Propriedades da Tabela:**
+          - Caption
+          - DataCaptionFields
+          - Description
+          - DrillDownPageId
+          - LookupPageId
+        - **Propriedades do Campo:**
+          - BlankZero
+          - Caption
+          - CaptionClass
+          - Description
+          - OptionCaption (para tipo de dado option)
+          - TableRelation
+          - Width (para exibição na página)
+
+
+      • O mesmo nome de chave pode ser usado na extensão de tabela, a menos que contenha campos da tabela base.
+
+
+
+
+
