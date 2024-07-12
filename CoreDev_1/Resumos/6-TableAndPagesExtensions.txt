@@ -1,5 +1,4 @@
-Table Extension
-________________________________________________________________________________________________________________
+	
 
 	
 	• tpageext - snippet para abrir o modelo de page extension

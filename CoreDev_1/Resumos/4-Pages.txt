@@ -8,7 +8,7 @@ ________________________________________________________________________________
 
         	- RoleCenter: Esta é a página inicial para um perfil de usuário específico, fornecendo uma visão geral do desempenho do negócio.
         	- Card: Usada para gerenciar dados mestre, de referência e de configuração.
-        	- Document: Usada para gerenciar transações e outros documentos.
+        	- Document: Usada para gerenciar transa		ções e outros documentos.
         	- List: Fornece uma visão geral das entidades e permite a edição inline de entidades simples.
         	- Worksheet: Usada para tarefas de entrada de dados baseadas em linhas (como diários) e consultas.
         	- StandardDialog: Um diálogo rotineiro que inicia ou progride uma tarefa.

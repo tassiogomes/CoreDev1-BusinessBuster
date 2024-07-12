@@ -1,0 +1,49 @@
+Table Extension
+________________________________________________________________________________________________________________	
+
+        • Uso
+                - Criar novos documentos (por exemplo, um novo pedido de venda).
+                - Editar documentos existentes.
+                - Visualizar detalhes dos documentos.
+                - Gerenciar linhas associadas ao documento principal (por exemplo, linhas de itens em um pedido de venda).
+
+Propriedades
+________________________________________________________________________________________________________________	
+
+
+        • Propriedades
+                - SourceTable: A tabela principal associada à página (por exemplo, Sales Header para pedidos de venda).
+                - PageType: Deve ser definida como Document.
+                - ApplicationArea: Define a área de aplicação da página (por exemplo, All, Basic, Suite).
+                - UsageCategory: Define onde a página será exibida no cliente (por exemplo, Lists, Tasks).
+
+
+        • Explicação do Snippet
+                • PageType = Document: Define que a página é um documento.
+                • SourceTable = "Sales Header": Especifica que a tabela fonte é a Sales Header, que contém os dados do cabeçalho do pedido de venda.
+                • ApplicationArea = All: Indica que esta página está disponível em todas as áreas de aplicação.
+                • layout: Define o layout da página, incluindo campos do cabeçalho e linhas do pedido.
+                • actions: Define ações disponíveis na página, como liberar o pedido.
+
+Notas
+________________________________________________________________________________________________________________	
+
+	• Criar e Editar Documentos: 
+		
+		- Na página de documento, você cria e edita documentos como pedidos de venda. Cada linha do documento pode corresponder a uma `Journal Line` que registra a transação financeira.
+	
+	• Journal Lines: 
+		
+		- As Journal Lines são linhas individuais de transações financeiras registradas em diários. Por exemplo, em um pedido de venda, as Journal Lines podem representar cada item vendido, cada pagamento recebido, etc.
+	
+	• Registro no Ledger:
+		
+		- Quando um documento é salvo ou postado na página de documento, suas transações são registradas no `Ledger`. Cada `Journal Line` é registrada no `Ledger` conforme definido pelas configurações contábeis.
+
+	• Registers (Registros):
+
+		- Registers referem-se aos registros ou entradas específicas em um diário contábil ou outra forma de registro financeiro. Por exemplo, um registro de venda em um diário de vendas.
+	
+	• Posted Documents:
+	
+		- Após o documento ser contabilizado (`Posted`), ele se torna um `Posted Document`, refletindo as transações efetivamente registradas e afetando os saldos das contas no `Ledger`.
