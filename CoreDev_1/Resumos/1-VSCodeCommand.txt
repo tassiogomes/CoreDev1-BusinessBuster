@@ -1,7 +1,8 @@
 Master table
 ________________________________________________________________________________________________________________
 
-	• Criar projeto
+
+
 		• Ctrl + Shift + p - abre a pesquisa.
 		• AL: GO! - cria uma nova app.
 		• Microsoft cloud Sandbox - entrar com credenciais e vai fazer o link com seus environments 365.
@@ -12,18 +13,15 @@ ________________________________________________________________________________
 		• AL: Explorer - Abre uma janela onde se pode explorar todos os objetos BC.
 
 
-	• Configuração
 		• App.json - é a sua app enquanto o launch é a sua configuração, não tem nada a ver.
 		• idRange - número que você cria uma extensão tem que estar nesse range.
 		• CustomerList.PageExt.al - objectname.objecttype.al padrão para nomear o arquivo e o nome do objeto.
 		• Um file pode ter vários objetos, mas o ideal é ter só um por file.	
 
 
-	• Atalhos Geais
 		• ttable - comando para criar uma tabela nova, renomear como acima.
-		• tpagefield - cria uma field dentro do layout/area/group.
 		• caption - ao criar um field novo, tem que usar o caption, que é o que será mostrado na user interface.
-		• 	 - é usado para efeitos de proteção e RGPD, os comuns são:
+		• DataClassification - é usado para efeitos de proteção e RGPD, os comuns são:
 			- ToBeClassified: Indica que o dado ainda precisa ser classificado.
 			- CustomerContent: Dados inseridos pelo cliente.
 			- SystemMetadata: Dados de sistema, metadados.

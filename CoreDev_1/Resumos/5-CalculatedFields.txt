@@ -42,6 +42,10 @@ ________________________________________________________________________________
             - Blob: O campo armazena dados binários grandes (Binary Large Object).
 
 
+
+
+
+
 Notas
 ________________________________________________________________________________________________________________
 
@@ -53,9 +57,40 @@ ________________________________________________________________________________
 
 
 
-Table Extension
+
+
+
+
+
+Field Calculation Methods
 ________________________________________________________________________________________________________________
 
-	
-	• ttableext - snippet para abrir o modelo de table extension
-	• tpageext - snippet para abrir o modelo de page extension
+        • Métodos de Cálculo de Campo:
+
+            - CalcFields: Calcula FlowFields em um registro. FlowFields são atualizados automaticamente quando são expressões diretas de controles, mas precisam ser explicitamente calculados quando fazem parte de uma expressão mais complexa.
+                Sintaxe:
+                [Ok :=] Record.CalcFields(Campo1, [Campo2],...);
+
+            - CalcSums: Calcula a soma de um ou mais campos que são SumIndexFields no registro.
+                Sintaxe:
+                [Ok :=] Record.CalcSums(Campo1, [Campo2],...);
+
+            - FieldError: Dispara um erro em tempo de execução após exibir uma mensagem de erro relacionada ao campo.
+                Sintaxe:
+                Record.FieldError(Campo, [Texto]);
+
+            - FieldName: Retorna o nome de um campo.
+                Sintaxe:
+                Nome := Record.FieldName(Campo);
+
+            - Init: Inicializa um registro.
+                Sintaxe:
+                Record.Init();
+
+            - TestField: Testa se um campo contém um valor específico.
+                Sintaxe:
+                Record.TestField(Campo, [Valor]);
+
+            - Validate: Chama o gatilho OnValidate de um campo.
+                Sintaxe:
+                Record.Validate(Campo [, NovoValor]);

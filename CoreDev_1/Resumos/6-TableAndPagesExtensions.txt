@@ -1,0 +1,195 @@
+Table Extension
+________________________________________________________________________________________________________________
+
+	
+	• tpageext - snippet para abrir o modelo de page extension
+	• Normalmente sado para as tabelas de raiz.
+
+
+
+    • field:
+        - Utilizado para adicionar novos campos a uma tabela existente.
+        - Sintaxe: field(ID; Nome; Tipo).
+        - Propriedades:
+            - ID: Identificador único do campo dentro da tabela.
+            - Nome: Nome do campo.
+            - Tipo: Tipo de dado do campo (por exemplo, Integer, Text, Date).
+        - Atributos:
+            - DataClassification: Define a classificação de dados para conformidade com regulamentos de privacidade.
+            - Caption: Especifica a legenda que será exibida para o campo.
+            - Editable: Determina se o campo pode ser editado (true ou false).
+            - Visible: Define se o campo é visível (true ou false).
+        - Triggers:
+            - OnValidate: Executado quando o campo é validado (por exemplo, ao ser modificado ou inserido).
+            - OnLookup: Executado quando uma busca é realizada no campo.
+            - OnAssistEdit: Executado quando a funcionalidade de assistência de edição é usada no campo.
+
+    • modify:
+        - Utilizado para modificar propriedades de campos existentes em uma tabela.
+        - Sintaxe: modify(NomeCampo).
+        - Propriedades que podem ser modificadas:
+            - Caption: Altera a legenda do campo.
+            - Editable: Modifica a capacidade de edição do campo (true ou false).
+            - Visible: Modifica a visibilidade do campo (true ou false).
+            - DataClassification: Atualiza a classificação de dados para conformidade com regulamentos de privacidade.
+        - Triggers que podem ser adicionados ou modificados:
+            - OnValidate: Executado quando o campo é validado.
+            - OnLookup: Executado quando uma busca é realizada no campo.
+            - OnAssistEdit: Executado quando a funcionalidade de assistência de edição é usada no campo.
+
+tableextension 50115 ExampleTableExtension extends ExistingTable
+{
+    fields
+    {
+        field(50116; NewFlowField; Decimal)                   // Adiciona um campo NewFlowField do tipo Decimal
+        {
+            DataClassification = ToBeClassified;             // Define a classificação de dados
+            Caption = 'New Flow Field';                      // Define a legenda do campo
+            Editable = false;                                // Define o campo como não editável, pois é um FlowField
+            Visible = true;                                  // Define o campo como visível
+            FieldClass = FlowField;                          // Define o campo como FlowField
+
+            CalcFormula = Sum("RelatedTable".Amount);        // Define a fórmula de cálculo para o FlowField, somando o campo Amount da tabela RelatedTable
+        }
+    }
+
+    modify(ExistingField)                                    // Modifica o campo existente ExistingField
+    {
+        Caption = 'Modified Existing Field';                 // Altera a legenda do campo
+        Editable = false;                                    // Define o campo como não editável
+        Visible = true;                                      // Define o campo como visível
+
+        trigger OnValidate()                                 // Trigger executado quando o campo é validado
+        begin
+            // Lógica de validação para ExistingField
+        end;
+    }
+}
+
+
+
+
+Page Extension
+________________________________________________________________________________________________________________
+
+
+	• tpageext - snippet para abrir o modelo de page extension
+
+
+    	• Page extensions no Microsoft Dynamics 365 Business Central são usadas para adicionar ou modificar a funcionalidade das páginas existentes sem precisar alterar o código base dessas páginas. Isso é feito usando a linguagem AL (Application Language).
+
+    	• Estrutura Básica de uma Page Extension
+        	- Uma page extension começa com a palavra-chave `pageextension` seguida de um identificador numérico e o nome da extensão. O alvo (`target`) define a página que está sendo estendida.
+
+    	• Propriedades
+        	- Algumas propriedades comuns usadas em page extensions incluem:
+            	- ApplicationArea: Especifica as áreas da aplicação onde a extensão é relevante.
+            	- Visible: Define se um controle é visível.
+            	- Enabled: Define se um controle está habilitado.
+           	 - Promoted: Marca uma ação como promovida (destacada).
+           	 - PromotedCategory: Define a categoria de promoção para uma ação.
+
+  	  • Layout
+  		- O layout de uma page extension pode ser modificado ou ampliado usando os seguintes métodos e palavras-chave:
+		- addbefore: Adiciona novos controles antes de um controle existente.
+		- addafter: Adiciona novos controles após um controle existente.
+	        - addfirst: Adiciona novos controles como os primeiros filhos do controle pai.
+	        - addlast: Adiciona novos controles como os últimos filhos do controle pai.
+		- move: Move um controle para um novo local na página.
+
+    • Ações
+        - Você pode adicionar novas ações ou modificar ações existentes em uma página:
+            - addfirst: Adiciona novas ações no início do grupo de ações.
+            - addlast: Adiciona novas ações no final do grupo de ações.
+            - addbefore: Adiciona novas ações antes de uma ação existente.
+            - addafter: Adiciona novas ações após uma ação existente.
+
+
+
+
+pageextension 50100 MyGeneralPageExtension extends "Some Existing Page"
+{
+    // Define o layout da extensão da página
+    layout
+    {
+        // Adiciona um novo campo antes de um campo existente
+        addbefore("Existing Field")
+        {
+            field("New Field"; NewFieldVariable)
+            {
+                ApplicationArea = All; // Define que o campo está disponível em todas as áreas da aplicação
+            }
+        }
+    }
+
+    // Define as ações da extensão da página
+    actions
+    {
+        // Adiciona uma nova ação após uma ação existente
+        addafter("Existing Action")
+        {
+            action("New Action")
+            {
+                ApplicationArea = All; // Define que a ação está disponível em todas as áreas da aplicação
+                Caption = 'My New Action'; // Define o rótulo da ação
+                Image = New; // Define a imagem do ícone da ação
+                Promoted = true; // Define que a ação é promovida (destacada)
+                PromotedCategory = Process; // Define a categoria de promoção para a ação
+                trigger OnAction()
+                begin
+                    // Código a ser executado quando a ação for acionada
+                end;
+            }
+        }
+    }
+
+    // Define um trigger que executa código quando a página é aberta
+    trigger OnOpenPage()
+    begin
+        // Código a ser executado quando a página é aberta
+    end;
+}
+
+
+
+
+Table Triggers e Page Triggers
+________________________________________________________________________________________________________________
+	
+	
+	• Nível da tabela
+  
+                - OnInsert: Disparado quando um novo registro é inserido em uma tabela.
+                - OnModify: Disparado quando um registro existente é modificado.
+                - OnDelete: Disparado quando um registro é deletado de uma tabela.
+                - OnRename: Disparado quando um registro é renomeado.
+
+        • Triggers de tabela em AL são comumente usados para uma variedade de tarefas:
+
+                - Data Validation: Usados para validar dados antes de serem inseridos, modificados ou deletados de uma tabela.
+                - Calculations: Úteis para realizar cálculos, como calcular o valor total de um pedido de vendas.
+                - Data Transfer: Permitem adicionar novos dados ou transferir dados de uma tabela para outra.
+                - Control Flow: Podem ser usados para controlar o fluxo da aplicação, por exemplo, exibindo uma caixa de mensagem quando uma condição específica é atendida.
+                - Record Changes: Similar aos triggers DDL do SQL Server, os triggers de tabela em AL podem ser usados para registrar alterações no esquema do banco de dados.
+                - Prevent Specific Changes: Podem ser usados para prevenir certas alterações específicas no esquema do banco de dados.
+                - Respond to Changes: Podem ser usados para responder a uma alteração no esquema do banco de dados.
+
+	• Field Triggers on a table
+
+        	- OnValidate - é usado para realizar validações adicionais quando um usuário insere dados em um campo específico.
+        	- OnLookup - é chamado antes que os dados sejam armazenados no banco de dados.
+
+
+        • Page Triggers:
+            - OnInit: Usado quando a página é carregada, mas antes que os controles estejam disponíveis.
+            - OnOpenPage: Usado quando a página é inicializada e os controles estão disponíveis.
+            - OnAfterGetRecord: Usado após um registro ser recuperado, mas antes de ser exibido.
+            -	 OnAfterGetCurrRecord: Usado após o registro atual ser recuperado da tabela.
+
+        • Field Triggers on a Page:
+            - OnAssistEdit: Acionado quando alguém usa o botão Assist Edit. Normalmente usado com No. Series para selecionar outra série numérica.
+            - OnDrillDown: Acionado quando um usuário seleciona um controle que atua como controle de drill-down. Geralmente usado com FlowFields para exibir os registros que compõem o cálculo do FlowField. Usado com HeadlineParts em uma página de Role Center para realizar uma ação quando o cabeçalho é selecionado.
+            - OnLookup: Acionado quando um usuário seleciona um controle suspenso que realiza uma pesquisa. Este trigger tem o mesmo comportamento que o trigger OnLookup no nível da tabela. Recomenda-se colocar o código no nível da tabela sempre que possível.
+            - OnValidate: Acionado quando um usuário insere um valor em um campo e depois sai do campo. Este trigger tem o mesmo comportamento que o trigger OnValidate no nível da tabela.
+		
+

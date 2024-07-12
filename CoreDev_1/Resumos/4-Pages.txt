@@ -117,7 +117,6 @@ ________________________________________________________________________________
 	• Nome.Page.al - nomemclatura para criar um arquivo page.
 	• tpage - atalho para criar uma nova page, existem vários tipos, card, lists etc.
 	• tpagefield - cria uma field dentro do layout/area/group.
-	•
 
 
 
@@ -141,7 +140,7 @@ ________________________________________________________________________________
 	• Always use the Rec. prefix when adding fields on Pages!
 	• Always use the Rec. prefix when you reference a procedure from the SourceTable of a page.
 	
-	• Não há DataClassification em pages, só em tables.
+	• DataClassification só em tables, só em tables e são colocados só dentro dos fields, não é uma propriedade de tabela.
 
 
 
