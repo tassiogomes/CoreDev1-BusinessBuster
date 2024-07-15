@@ -1,1 +1,3 @@
 https://lms.businesscentralbooster.com/unit/viewS/id:6291
+
+https://learn.microsoft.com/en-us/dynamics365/business-central/dev-itpro/developer/devenv-page-types-and-layouts
