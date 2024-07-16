@@ -25,6 +25,48 @@ ________________________________________________________________________________
                 • layout: Define o layout da página, incluindo campos do cabeçalho e linhas do pedido.
                 • actions: Define ações disponíveis na página, como liberar o pedido.
 
+
+Guia
+________________________________________________________________________________________________________________	
+
+
+
+
+		• Criar a Tabela de Cabeçalho (Header)
+			- Propósito: Armazena as informações principais do documento (ex.: número do documento, descrição).
+			- Chave Primária: Defina um campo como chave primária (geralmente No. ou Document No.).
+
+		• Criar a Tabela de Linhas (Lines)
+			- Propósito: Armazena os detalhes do documento (ex.: itens, quantidades).
+			- Chave Primária: Defina uma chave primária composta por Document No. (referenciando o cabeçalho) e Line No..
+
+		• Criar a Página de Documento (Document Page)
+			- Fonte: Use a tabela de cabeçalho como a tabela fonte.
+			- Layout:
+			  - Grupo Geral: Adicione os campos principais do cabeçalho.
+			  - Grupo de Linhas: Adicione uma parte para exibir as linhas do documento.
+			  - SubPageLink: Conecte as linhas do documento ao cabeçalho através de Document No. = No..
+
+		• Criar a Página de Linhas (ListPart)
+			- Fonte: Use a tabela de linhas como a tabela fonte.
+			- Layout:
+			  - Repeater: Defina um repetidor para listar os registros das linhas do documento.
+			  - Campos: Adicione os campos que precisam ser exibidos nas linhas (ex.: Item No., Quantity).
+
+		Ordem das Etapas:
+			- Tabela de Cabeçalho (Header): Define os campos principais do documento.
+			- Tabela de Linhas (Lines): Define os detalhes do documento e relaciona cada linha ao cabeçalho através do Document No..
+			- Página de Documento (Document Page): Configura a exibição do cabeçalho e inclui uma parte para exibir as linhas.
+			- Página de Linhas (ListPart): Configura a exibição dos detalhes do documento na forma de uma lista.
+
+		Relações Importantes:
+			- SubPageLink: Na Document Page, use o SubPageLink para conectar as linhas do documento ao cabeçalho (Document No. = No.). (campo da tabela linhas = campo da tabela header)
+			- Repeater: Na ListPart, use um repetidor para exibir os registros das linhas.
+
+
+
+
+
 Notas
 ________________________________________________________________________________________________________________	
 
@@ -47,3 +89,23 @@ ________________________________________________________________________________
 	• Posted Documents:
 	
 		- Após o documento ser contabilizado (`Posted`), ele se torna um `Posted Document`, refletindo as transações efetivamente registradas e afetando os saldos das contas no `Ledger`.
+
+
+Sales Order Header: Esta tabela representa o cabeçalho da ordem de vendas, com campos como No. (número da ordem) e Customer No. (número do cliente).
+Sales Order Line: Esta tabela representa as linhas da ordem de vendas, com campos como Line No. (número da linha), Document No. (número do documento) e Item No. (número do item).
+AutoSplitKey: Na tabela Sales Order Line, a propriedade AutoSplitKey foi adicionada para especificar um campo que será usado para dividir automaticamente as entradas de linha em subgrupos. Isso é útil quando você precisa categorizar automaticamente as linhas da ordem de vendas com base em algum critério específico.
+
+
+
+
+
+Configuration Analysis
+AutoSplitKey: This parameter is set to true, which typically means that the keys (likely referring to unique identifiers or primary keys) will be automatically generated or handled by the system.
+
+DelayedInsert: Also set to true, suggesting that inserts (adding new records or items) may be deferred or queued for processing rather than immediate.
+
+PageType: Specifies that this layout is intended for a list part, indicating it’s designed to display multiple items in a structured format.
+
+SourceTable: Refers to the data source table, which is "Sales Line" in this case, indicating that this layout is for displaying information from this specific table.
+
+SourceTableView: Defines the view from which data is sourced. It uses a filter condition (where("Document Type" = filter(Order))) to presumably fetch only those records where the "Document Type" matches some criteria (possibly based on a filter called "Order").

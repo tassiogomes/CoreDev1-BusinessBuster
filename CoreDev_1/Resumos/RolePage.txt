@@ -1,0 +1,37 @@
+        • Actions em AL:
+            • Actions são parte fundamental da interface do usuário em AL.
+            • Utilizadas para iniciar tarefas ou processos como abrir uma página, um relatório ou executar um codeunit.
+            • Podem ser agrupadas em contêineres de actions: action groups, menus e submenus.
+            • Promoted actions aparecem na faixa de opções do RoleCenter e páginas de lista.
+
+        • Tipos de Actions:
+            • Tasks: Executam uma tarefa relacionada a um registro ou página.
+            • Reports: Executam um relatório ou processo.
+            • Navigations: Navegam para uma página relacionada.
+
+        • Interface do Usuário:
+            • Actions são disponibilizadas em vários lugares de uma página.
+            • Actions mais importantes aparecem na action bar no topo da página, próximo ao título.
+            • Partes específicas da página, como a seção Lines em um documento, podem ter actions específicas.
+            • Factboxes também podem definir actions específicas acessíveis em um menu de actions.
+
+        • Definição de Actions em AL:
+            • Definidas na seção actions sob a seção layout de uma página.
+            • Usar a propriedade Promoted para mostrar actions na primeira parte da barra de comandos.
+            • Actions têm propriedades como ID, Name, Caption e Image.
+            • A propriedade Image exibe uma imagem na action.
+            • PromotedCategory define a categoria de promoção para mostrar a action em um menu específico.
+            • PromotedOnly é uma propriedade booleana para actions que devem ser promovidas mas não aparecer em menus normais.
+            • PromotedIsBig altera a ordem das actions promovidas, fazendo com que apareçam antes de outras actions.
+            • O trigger OnAction permite escrever código AL para executar ao selecionar uma action.
+            • A propriedade RunObject pode ser usada para abrir uma página ou executar um código.
+            • RunPageLink, RunPageMode e RunPageView são usadas para configurar actions relacionadas a páginas.
+            • RunPageLink cria uma conexão entre tabelas de duas páginas, aplicando filtros.
+            • RunPageMode define o modo de abertura da página (View, Edit, Create).
+            • RunPageView permite aplicar um filtro de tabela na página para exibir resultados filtrados.
+
+
+
+		- todaS as DEFAULT ACTIONS são definidas pelo PAGETYPE.
+		- apos o LAYOUT cirar a ACTIONS e dentro só pode ter a seção AEREA.
+		-
