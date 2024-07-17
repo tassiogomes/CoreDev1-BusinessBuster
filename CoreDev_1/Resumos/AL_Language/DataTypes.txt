@@ -1,0 +1,339 @@
+	Fundamental data types
+________________________________________________________________________________________________________________
+
+
+
+
+		• A fundamental data type can't be divided into sub-values, and it always holds one value.
+		• Numeric
+				• Integer
+				• BigInteger
+				• Decimal
+				• Option
+				• Char
+				• Byte
+				• Duration
+		• String
+				• Text
+				• Code
+		• Boolean
+		• Date
+		• Time
+		• DateTime
+
+		• The Option data type is a zero-based enumerator type; therefore, you can convert option values to integers. An Option data type is a numeric data type for that reason, because the option values are stored as integers.
+		• The Char data type is a single character; therefore, it is also stored as a number. It's using the ASCII character number. You can only have 256 characters, so a character can only have a value from 0 to 255.
+		• The Action data type isn't available as a data type for a field in a table, but it's used to specify what action that a user performs on a page. The PAGE.RUNMODAL and the RUNMODAL methods (which will be discussed later in this learning path) return an Action data type value. The following actions are available:
+				• OK
+				• Cancel
+				• LookupOK
+				• LookupCancel
+				• Yes
+				• No
+				• RunObject
+				• RunSystem
+
+• Complex data types
+		• You can use Complex data types when you want to work with records in tables, pictures (bitmaps), or disk files. These data types can store multiple values. Application language contains numerous Complex data types:
+				• BigText
+				• BLOB
+				• CodeUnit
+				• DateFormula
+				• Dialog
+				• File
+				• Fieldref
+				• GUID
+				• InStream and OutStream
+				• KeyRef
+				• Page
+				• Query
+				• Record
+				• RecordID
+				• RecordRef
+				• Report
+				• System
+				• TableFilter
+				• Variant
+				• List & Dictionary
+
+
+
+
+
+	Options e enums
+________________________________________________________________________________________________________________
+
+
+
+
+		• O tipo de dados Option é um enumerador baseado em zero; portanto, você pode converter valores de opção em inteiros. Por essa razão, um tipo de dados Option é um tipo de dados numérico porque os valores da opção são armazenados como inteiros.
+		• Para definir uma variável do tipo Option, você não pode usar a propriedade OptionMembers usada em um campo do tipo Option. Você precisa listar as opções disponíveis como uma lista separada por vírgulas após a definição da variável.
+		• Exemplo de uso do tipo de dados Option em AL.
+		• Se você quiser reutilizar o mesmo tipo Option em outros objetos (como outros codeunits, páginas ou tabelas), terá que redefinir todos os valores disponíveis. Posteriormente, se decidir adicionar um valor extra, você precisará modificar todos os objetos com esse valor extra. Opções em uma tabela não são extensíveis com uma extensão de tabela.
+
+		• Uma abordagem melhor seria usar o objeto Enum. Um enum é um objeto separado com seu próprio número e nome. Você pode usar um objeto Enum em qualquer outro objeto sem a necessidade de redefini-lo. O objeto Enum também pode ser estendido com extensões de enum.
+		• Um tipo de enumeração, também conhecido como enum na programação, é uma palavra-chave usada para declarar um tipo que consiste em um conjunto de constantes nomeadas. A lista de constantes nomeadas é chamada de lista de enumeração. Enums podem ser usados como campos de tabela, variáveis locais e globais e parâmetros.
+
+		• Para declarar um enum em AL, você deve especificar um ID e um nome. A lista de enumeração consiste em valores e cada um dos valores é declarado com um ID e um valor. O ID do valor é o valor ordinal na lista de enumeração e deve ser único. Quando os valores do enum são exibidos na interface do usuário, eles são ordenados pela ordem de declaração. Além disso, se a extensão B estender a extensão A, os valores do enum declarados na extensão A são exibidos antes dos valores do enum declarados na extensão B.
+		• Exemplo de uso do tipo de objeto Enum em AL.
+
+		• Embora enums e objetos de extensão de enum tenham IDs de objeto, eles não são aplicados pela licença. Em versões anteriores, eles reutilizavam o intervalo para tabelas e eram verificados em relação à licença no momento da implantação, mas esse não é mais o caso. A validação de exclusividade agora é aplicada durante a instalação, que falhará se um ID de objeto enum conflitar com um enum já instalado. Assim, como sempre, é importante que você use IDs de objeto em seu intervalo atribuído. Isso é aplicado para aplicativos AppSource, mas não para extensões por locatário ou locais. O enum não precisa usar o mesmo ID que a tabela em que está colocado.
+
+		• Somente enums com a propriedade Extensible definida como true podem ser estendidos.
+
+		• Ao criar legendas para enums, é importante que a legenda não contenha uma vírgula. Ter uma vírgula na legenda, como Caption = 'Nível Diamante, com bônus', pode exibir em várias linhas na interface do usuário. Esse comportamento também faz com que o valor real selecionado pelo usuário na interface do usuário não corresponda ao valor que é salvo no banco de dados.
+
+		• Um aviso AppSourceCop é acionado se os arquivos .xlf contiverem vírgulas em legendas de enum.
+
+		• Enums podem ser estendidos para adicionar mais valores à lista de enumeração, caso em que a propriedade Extensible deve ser definida como true. A sintaxe para uma extensão de enum, que estende o enum Loyalty com o valor Diamond, é mostrada abaixo.
+
+			```al
+			enumextension 50130 LoyaltyWithDiamonds extends Loyalty
+			{
+			    value(50130; Diamond)
+			    {
+			        Caption = 'Nível Diamante';
+			    }
+			}
+			``` 
+
+
+
+	Array
+________________________________________________________________________________________________________________
+
+
+
+• Trabalhar com coleções
+		• AL suporta três tipos de coleções. Uma coleção é um tipo complexo que contém múltiplos valores em uma variável. Todas essas coleções são fortemente tipadas, o que significa que você não pode ter valores de diferentes tipos na mesma coleção. Por exemplo, você não pode adicionar valores de data em uma coleção que permite apenas valores inteiros. Os três tipos de coleções que AL suporta são:
+
+		• Array
+		• List
+		• Dictionary
+
+• Arrays
+		• Arrays são variáveis complexas que contêm um grupo de valores do mesmo tipo de dado. Um array é declarado como uma variável com as seguintes características:
+		
+		• Um identificador
+		• Um tipo de dado
+		• Um ou mais elementos
+		• Um índice
+		• Uma dimensão
+
+		• Um array contém múltiplos valores, e esses valores são armazenados nos elementos do array. Você pode acessar esses valores usando o índice, que também pode ser um valor armazenado em outra variável. Com esse design, você pode criar um loop onde incrementa uma certa variável para percorrer cada elemento de um array. Usando a propriedade Dimension, você pode definir quantas dimensões o array terá.
+		
+		• Ao criar uma variável de tipo array, primeiro você precisa definir quantos elementos terá no array. O array mais comumente usado é o array unidimensional, que é uma lista de elementos do mesmo tipo de dado.
+
+		• Para criar um array, use o seguinte código:
+			```al
+			SalesAmount: array[10] of Integer;
+			```
+		• Para acessar um elemento em um array, use a sintaxe do elemento de array:
+			```al
+			SalesAmount[5] := 0;
+			```
+		• No exemplo anterior, SalesAmount é o identificador, e você está acessando o quinto elemento do array. Você está definindo o valor zero (0) no quinto elemento. Em AL, você começa a contagem em um (1) para um array, enquanto outras linguagens de programação, como Java, C#, e assim por diante, geralmente começam a contagem em zero (0) para o primeiro elemento de um array.
+
+		• Ter apenas um elemento entre os colchetes indica que você está usando um array unidimensional. Se você quiser ter um array multidimensional, use uma lista separada por vírgulas entre os colchetes, da seguinte forma:
+			```al
+			SalesAmount: array[6,9] of Integer;
+			```
+		• Para acessar um elemento em um array, use a sintaxe do elemento de array:
+			```al
+			SalesAmount[5,3] := 0;
+			```
+
+
+	Listas
+________________________________________________________________________________________________________________
+
+
+• Listas
+
+	• O tipo de dado List pode ser comparado com um array. O tipo List só pode ser usado com tipos fundamentais e representa uma lista fortemente tipada de valores que podem ser acessados por índice.
+
+	• Portanto, você pode ter um tipo List de [Integer], mas não pode ter um tipo List de [Blob].
+
+	• Um tipo de dado List não requer que você defina quantos elementos deseja armazenar antecipadamente (enquanto um tipo de dado Array requer).
+
+	• O tipo de dado List usa a classe System.Collections.Generic.List<T> do Framework .NET, o que permite o uso de alguns métodos integrados.
+
+	• O tipo de dado List possui alguns métodos que são frequentemente utilizados. Os métodos disponíveis para um tipo de dado List são discutidos em um módulo posterior deste caminho de aprendizado; no entanto, a figura a seguir mostra como criar uma nova variável com um tipo de List.
+
+procedure AddCustomerNames()
+var
+    CustomerNames: List of [Text];
+begin
+    CustomerNames.Add('Paul');
+    CustomerNames.Add('Linda');
+    Message(CustomerNames.Get(1));
+    // Resultado será 'Paul'
+end;
+
+
+
+	Dicionário
+________________________________________________________________________________________________________________
+
+
+	• O tipo de dado Dictionary utiliza a classe System.Collections.Generic.Dictionary<TKey, TValue> do Framework .NET, o que permite o uso de alguns métodos integrados. Este tipo de dado representa uma coleção de chaves e valores.
+
+	• Cada chave criada neste dicionário deve ser única. O principal benefício é que você pode obter imediatamente o valor para uma chave específica.
+
+	• O valor pode ser de um tipo simples, mas também pode ser do tipo List ou outro tipo de Dictionary.
+
+procedure AddCustomerNames()
+var
+    CustomerNames: List of [Text];
+    CustomerNames2: List of [Text];
+    CountriesDictionary: Dictionary of [Code[2e);
+begin
+    CustomerNames.Add('Paul');
+    CustomerNames.Add('Linda');
+    Message(CustomerNames.Get(1));
+    // Resultado será 'Paul'
+    
+    CustomerNames2.Add('Eddy');
+    CustomerNames2.Add('Mark');
+    
+    CountriesDictionary.Add('US', CustomerNames);
+    CountriesDictionary.Add('CA', CustomerNames2);
+    
+    Message(CountriesDictionary.Get('US').Get(2));
+    // Resultado será 'Linda'
+end;
+
+
+
+
+
+
+
+
+	Expresions
+________________________________________________________________________________________________________________
+
+
+
+• Unary
+========
+
+	• Um operador unário afeta apenas o termo que segue diretamente o operador. Os seguintes são valores de operadores unários:
+
+		+
+		-
+		NOT
+
+	• Quando você usa o sinal de menos (-), ele cria um valor negativo para o termo que segue o sinal de menos. Portanto, ele afeta apenas o termo que segue o operador.
+
+al-language
+
+Copy
+var
+    CustomerExists: Boolean;
+    MyBoolean: Boolean;
+begin
+    CustomerExists := true;
+    MyBoolean := NOT CustomerExists;
+    // Resultado será MyBoolean: false
+end;
+
+Os próximos operadores são todos operadores binários, que afetam termos em ambos os lados do operador.
+
+
+
+
+• Operadores de String
+========================
+
+	• O único operador de string é o sinal de mais (+), que é um operador binário porque afeta termos em ambos os lados do operador. O operador de string concatena duas strings.
+
+al-language
+
+Copy
+var
+    MyText: Text[100];
+begin
+    MyText := 'Word' + ' ' + 'is concatenated.';
+    // Resultado será MyText: 'Word is concatenated.'
+end;
+
+
+
+
+• Arithmetic Operators
+=======================
+
+	• Arithmetic operators are used in numeric expressions. A numeric expression is a formula that results in a numeric value.
+
+	• The following arithmetic operators are available:
+
+		+ (addition)
+		- (subtraction)
+		* (multiplication)
+		/ (division)
+		DIV (integer division)
+		MOD (modulus)
+
+
+
+• Operator Precedence in AL:
+============================
+
+	• Highest Level:
+		• Unary Operator
+
+	• Second Level:
+		• * (multiplication)
+		• / (division)
+		• DIV (integer division)
+		• MOD (modulus)
+
+	• Lowest Level:
+		• + (addition)
+		• - (subtraction) (binary)
+
+
+
+
+
+• Relational expressions in AL:
+================================
+
+	• = (equal to)
+	• < (less than)
+	• > (greater than)
+	• <= (less than or equal to)
+	• >= (greater than or equal to)
+	• <> (not equal to)
+	• IN (include in set)
+
+Relational operators have the lowest precedence of all operators. They are used to compare values numerically, alphabetically (for strings), based on calendar date and time, or for boolean values (false before true).
+
+
+
+• Expressões Lógicas em AL:
+============================
+
+    • AND
+    • OR
+    • XOR
+    • NOT
+
+O operador NOT reverte valores lógicos: NOT True resulta em False e NOT False resulta em True.
+O operador OR resulta em True se pelo menos um dos operandos for True; caso contrário, resulta em False.
+O operador AND resulta em True apenas se ambos os operandos forem True; caso contrário, resulta em False.
+O operador XOR (OU Exclusivo) resulta em True se exatamente um dos operandos for True; caso contrário, resulta em False.
+
+
+
+
+• Expressões Booleanas:
+========================
+
+    Uma expressão Booleana resulta em um valor Booleano (True ou False) e geralmente é formada por expressões relacionais e lógicas.
+
+
+
+
+

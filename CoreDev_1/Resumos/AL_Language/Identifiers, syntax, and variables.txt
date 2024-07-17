@@ -1,0 +1,68 @@
+	• Identificadores, Sintaxe e Variáveis no AL
+________________________________________________________________________________________________________________
+
+		• Identificadores: Nomes dados aos elementos de programação.
+		• Variáveis: Locais na memória onde dados são armazenados.
+		• Sintaxe: Regras gramaticais para uso de identificadores.
+
+	• Regras para Identificadores
+		
+		• Devem ser únicos dentro de um objeto.
+		• Preferencialmente começando com uma letra ou underscore.
+		• Aplicação não diferencia maiúsculas de minúsculas.
+		• Usar PascalCase (e.g., CustomerName).
+
+	• Declaração de Variáveis
+
+		• Identificador: Nome da variável.
+		• Escopo: Onde a variável pode ser acessada (global ou local).
+		• Tipo de Dados: Define o tipo de valor que a variável pode armazenar.
+		• Inicialização: Atribuição de um valor padrão (ex.: 0 para inteiros, "" para strings).
+
+	• Exemplo de Escopo
+		
+		• Global: Disponível em todo o objeto.
+		• Local: Disponível apenas no procedimento ou gatilho onde foi declarado.
+		• Sistema: Variáveis como Rec e xRec, definidas pelo sistema.
+
+	• Declaração Múltipla
+		
+		• Variáveis do mesmo tipo podem ser declaradas na mesma linha:
+		
+			```al
+			var
+			    myInt, nextInt, thirdInt : Integer;
+			    isValid, doCheck : Boolean;
+			```
+
+	• Variáveis Protegidas
+		
+		• Usadas para tornar variáveis acessíveis entre tabelas e extensões:
+		
+			```al
+			protected var
+			    myInt: Integer; // Variável protegida
+			var
+			    myLocalInt: Integer; // Variável local
+			```
+
+	• Exemplo de Uso de Variáveis Protegidas
+		
+		• Página com variáveis protegidas que podem ser acessadas e modificadas em extensões de página.
+
+	• Diretrizes para Código AL
+		
+		• Codeunits: Preferível colocar código em codeunits para reutilização e segurança.
+		• Objetos: Se necessário, colocar código próximo ao objeto modificado.
+		• Reutilização: Centralizar código para evitar inconsistências e facilitar manutenção.
+
+	• Resumo
+		
+		• Use identificadores únicos e PascalCase.
+		• Declare variáveis com escopo adequado.
+		• Reutilize código em codeunits para segurança e manutenção eficiente.
+
+
+
+	• Identificadores, Sintaxe e Variáveis no AL
+________________________________________________________________________________________________________________

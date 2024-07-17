@@ -35,3 +35,111 @@
 		- todaS as DEFAULT ACTIONS são definidas pelo PAGETYPE.
 		- apos o LAYOUT cirar a ACTIONS e dentro só pode ter a seção AEREA.
 		-
+
+page 50103 "Big Boss Role Center"
+{
+    PageType = RoleCenter; // Define a página como uma RoleCenter
+    Caption = 'Big Boss'; // Define o título da página
+
+    layout
+    {
+        area(RoleCenter) // Define a área principal do Role Center
+        {
+            part(Headline; "Headline RC Big Boss") // Define uma parte para o cabeçalho
+            {
+            }
+            part(Activities; "Big Boss Activities") // Define uma parte para as atividades
+            {
+            }
+            part("Help And Chart Wrapper"; "Help And Chart Wrapper") // Define uma parte para ajuda e gráficos
+            {
+            }
+            part("Report Inbox Part"; "Report Inbox Part") // Define uma parte para a caixa de entrada de relatórios
+            {
+            }
+            part("Power BI Report Spinner Part"; "Power BI Report Spinner Part") // Define uma parte para relatórios Power BI
+            {
+            }
+        }
+    }
+
+    area(sections) // Define a área de seções para ações adicionais
+    {
+        group(Action39) // Define um grupo de ações
+        {
+            Caption = 'Finance'; // Define o título do grupo de ações
+            Image = Journals; // Define a imagem do grupo de ações
+
+            action(GeneralJournals) // Define uma ação
+            {
+                Caption = 'General Journals'; // Define o título da ação
+                RunObject = Page "General Journal Batches"; // Define o objeto a ser executado (uma página de lotes de diário geral)
+                RunPageView = where("Template Type" = const(General), Recurring = const(false)); // Define a visão da página
+            }
+            action(Action3) // Define outra ação
+            {
+                Caption = 'Chart of Accounts'; // Define o título da ação
+                RunObject = Page "Chart of Accounts"; // Define o objeto a ser executado (uma página de plano de contas)
+            }
+            action("G/L Account Categories") // Define uma ação para categorias de contas G/L
+            {
+                Caption = 'G/L Account Categories'; // Define o título da ação
+                RunObject = Page "G/L Account Categories"; // Define o objeto a ser executado (uma página de categorias de contas G/L)
+            }
+            action("G/L Budgets") // Define uma ação para orçamentos G/L
+            {
+                Caption = 'G/L Budgets'; // Define o título da ação
+                RunObject = Page "G/L Budget Names"; // Define o objeto a ser executado (uma página de nomes de orçamento G/L)
+            }
+            // ... Outras ações podem ser definidas aqui
+        }
+
+        group("Cash Management") // Define um grupo de ações para gestão de caixa
+        {
+            Caption = 'Cash Management'; // Define o título do grupo de ações
+            // ... Outras ações podem ser definidas aqui
+        }
+
+        group(Action40) // Define um grupo de ações para vendas
+        {
+            Caption = 'Sales'; // Define o título do grupo de ações
+            // ... Outras ações podem ser definidas aqui
+        }
+    }
+
+    area(embedding) // Define a área de integração para ações rápidas
+    {
+        action(Customers) // Define uma ação para clientes
+        {
+            Caption = 'Customers'; // Define o título da ação
+            RunObject = Page "Customer List"; // Define o objeto a ser executado (uma página de lista de clientes)
+        }
+        action(Vendors) // Define uma ação para fornecedores
+        {
+            Caption = 'Vendors'; // Define o título da ação
+            RunObject = Page "Vendor List"; // Define o objeto a ser executado (uma página de lista de fornecedores)
+        }
+        action(Items) // Define uma ação para itens
+        {
+            Caption = 'Items'; // Define o título da ação
+            RunObject = Page "Item List"; // Define o objeto a ser executado (uma página de lista de itens)
+        }
+        action("Bank Accounts") // Define uma ação para contas bancárias
+        {
+            Caption = 'Bank Accounts'; // Define o título da ação
+            RunObject = Page "Bank Account List"; // Define o objeto a ser executado (uma página de lista de contas bancárias)
+        }
+        action("Chart of Accounts") // Define uma ação para plano de contas
+        {
+            Caption = 'Chart of Accounts'; // Define o título da ação
+            RunObject = Page "Chart of Accounts"; // Define o objeto a ser executado (uma página de plano de contas)
+        }
+    }
+}
+
+
+	Personalização
+		- Profile roles personaliza a nível de profile.
+		- no Tell-me USER SETTINGS se seta a rolepage padrao para o user, a nivel do user.
+		
+	
