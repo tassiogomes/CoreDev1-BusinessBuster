@@ -1,0 +1,254 @@
+
+
+        • Declarações Condicionais
+________________________________________________________________________________________________________________
+
+
+        • Reasons for creating custom procedures:
+
+                • Organize the program.
+
+                • Create self-explaining code.
+
+                • Simplify the development process.
+
+                • Make code reusable, which reduces work.
+
+                • Reduce errors.
+
+                • Help make modifications easier.
+
+                • Reduce the size of the objects.
+
+        A procedure is a named part of a program that groups many lines of code under a single name for easy invocation.
+
+        To create a new custom function, use the `procedure` snippet.
+
+        ```al-language
+        local procedure MyProcedure()
+        begin
+           // Some logic goes here.
+        end;
+        ```
+
+        • A procedure, whether custom or existing, can be called from within expressions or statements.
+
+
+
+        **Procedure call in an expression:**
+===================================================================
+
+
+
+        In the following example, the `CalculatePrice` custom procedure is called from within an expression that multiplies the calculated price with a certain quantity. 
+
+        ```al-language
+        trigger OnRun()
+        begin
+          TotalCost := Quantity * CalculatePrice();
+        end;
+
+        procedure CalculatePrice() : Decimal
+        begin
+           // Some calculation logic goes here.
+        end;
+        ```
+
+
+
+
+        **Procedure call in a statement:**
+===================================================================
+
+        In this example, the custom function `MyCustomFunction` is called from within a statement.
+
+        ```al-language
+        trigger OnRun()
+        begin
+          if Quantity > 5 then
+            MyCustomFunction();
+        end;
+
+        procedure MyCustomFunction()
+        begin
+           // Some logic goes here.
+        end;
+        ```
+
+
+
+        **GuiAllowed function:**
+===================================================================
+
+        When creating custom procedures, consider using the `GuiAllowed` function to determine if certain parts of your code should execute based on the availability of a graphical user interface (GUI).
+
+        ```al-language
+        if GuiAllowed then
+           Message('Hello');
+        ```
+
+        • This function is crucial in scenarios where your function might be called through an API service, ensuring that operations expecting user input or displaying messages are handled appropriately.
+
+
+
+
+
+
+•   Global Procedures
+===================================================================
+
+        •   Access Scope: Global procedures are accessible from anywhere within the same extension and can also be accessed by other extensions that depend on or reference your extension.
+        •   Declaration: Global procedures are declared without any specific keyword (or with `public` explicitly stated), making them accessible globally by default.
+        •   Example:
+                ```al-language
+                procedure MyFunction()
+                begin
+                   // Logic goes here
+                end;
+                ```
+
+•   Local Procedures
+===================================================================
+
+
+        •   Access Scope: Local procedures are restricted to the object in which they are defined. They cannot be accessed outside of the current object.
+        •   Declaration: Local procedures are declared using the `local` keyword.
+        •   Example:
+                ```al-language
+                local procedure MyFunction()
+                begin
+                   // Logic goes here
+                end;
+                ```
+
+
+
+•   Local Variables
+===================================================================
+
+
+        •   Scope: Local variables are limited to the procedure (function) where they are defined. They cannot be accessed outside of this procedure.
+        •   Declaration: Local variables are declared within a procedure using the `var` keyword.
+        •   Example:
+                ```al-language
+                procedure MyFunction()
+                var 
+                   myInt: Integer;
+                begin
+                   myInt := 5;   // The variable myInt is only available in this function
+                end;
+
+                procedure MyFunction2()
+                begin
+                   myInt := 6;   // Error: The variable myInt is not in the scope of MyFunction2
+                end;
+                ```
+
+•   Global Variables
+===================================================================
+
+
+        •   Scope: Global variables are accessible from anywhere within the object where they are defined. They cannot be accessed outside the object.
+        •   Declaration: Global variables are declared outside of any procedure, typically at the beginning of the object code.
+        •   Example:
+                ```al-language
+                var
+                   myInt2: Integer;
+
+                procedure MyFunction()
+                var 
+                   myInt: Integer;
+                begin
+                   myInt := 5;   // The variable myInt is only available in this function
+                   myInt2 := 10; // myInt2 is accessible everywhere in the object
+                end;
+
+                procedure MyFunction2()
+                begin
+                   myInt := 6;   // Error: The variable myInt is not in the scope of MyFunction2
+                   myInt2 := 11; // myInt2 is accessible everywhere in the object
+                end;
+                ```
+
+
+        •   Pass parameters by value
+===================================================================
+
+
+                •   Definition: When passing a parameter by value, you're passing a copy of the variable's value to the procedure.
+                •   Scope: Changes made to the parameter within the procedure do not affect the original variable outside of the procedure.
+                •   Syntax: Use the parameter type without any additional keywords.
+                •   Example:
+                        ```al-language
+                        trigger OnRun()
+                        var
+                            myInteger : Integer;
+                            myResult : Integer;
+                        begin
+                            myInteger := 23;
+                            myResult := MyFunction(myInteger);
+
+                            Message('myInteger: %1', myInteger);  // Displays 23
+                            Message('myResult: %1', myResult);    // Displays 17
+                        end;
+
+                        procedure MyFunction(paramA : Integer) : Integer
+                        begin
+                          paramA := 17;
+                          Exit(paramA);
+                        end;
+                        ```
+                •   Explanation: In this example, `myInteger` retains its original value of 23 even after `MyFunction` changes the value of `paramA`.
+
+
+
+        •   Pass parameters by reference
+===================================================================
+
+
+                •   Definition: When passing a parameter by reference, you're passing the memory address of the variable to the procedure.
+                •   Scope: Changes made to the parameter within the procedure directly affect the original variable outside of the procedure.
+                •   Syntax: Use the `var` keyword before the parameter type to denote passing by reference.
+                •   Example:
+                        ```al-language
+                        trigger OnRun()
+                        var
+                            myInteger : Integer;
+                            myResult : Integer;
+                        begin
+                            myInteger := 23;
+                            myResult := MyFunction(myInteger);
+
+                            Message('myInteger: %1', myInteger);  // Displays 17
+                            Message('myResult: %1', myResult);    // Displays 17
+                        end;
+
+                        procedure MyFunction(var paramA : Integer) : Integer
+                        begin
+                          paramA := 17;
+                          Exit(paramA);
+                        end;
+                        ```
+                •   Explanation: In this example, `myInteger` is changed to 17 after `MyFunction` modifies the value of `paramA` because it is passed by reference.
+
+
+
+
+        •   Returning complex types
+===================================================================
+
+                •   Description: You can simplify code by returning complex types directly from procedures.
+                •   Example:
+                        ```al-language
+                        procedure GetCustomerByName(Name: Text): record Customer;
+                        var
+                            Customer: record Customer;
+                        begin
+                            Customer.SetFilter(Name, '@' + Name + '*');
+                            Customer.FindFirst();
+                            exit(Customer);
+                        end;
+                        ```
+                •   Usage: This allows direct access to members of the returned type, such as using them in expressions like `if GetCustomerByName('SomeName')."Balance (LCY)" > 0 then`.
+
+                •   Additional Notes: More examples and details on returning complex types are available in the documentation.

@@ -1,0 +1,152 @@
+
+	•	**Métodos de Interação** https://learn.microsoft.com/en-us/training/modules/al-built-in-functions/2-interaction-functions
+________________________________________________________________________________________________________________	
+
+
+		Quando você escreve código na linguagem de aplicação (AL), pode querer interagir com o usuário em determinados momentos. Você pode pedir uma confirmação ao usuário, fornecer informações adicionais ou permitir que o usuário faça uma escolha.
+
+		Para realizar essas tarefas, você pode usar as seguintes funções de interação:
+
+			•	Message
+			•	Confirm
+			•	StrMenu
+			•	Error
+
+
+	•	**Melhores Práticas para Mensagens de Usuário**
+
+		Recomendamos as seguintes diretrizes para escrever mensagens para usuários finais:
+
+			•	Escreva as mensagens corretamente de acordo com as regras gramaticais do seu idioma.
+			•	Não use barras invertidas para indicar quebras de linha em uma mensagem. A formatação de linha é concluída automaticamente.
+			•	Use os métodos FieldCaption() e TableCaption() sempre que possível para retornar nomes de campos e tabelas como strings. Isso é importante para que o usuário possa sempre reconhecer um termo que indica um nome de campo ou tabela.
+
+			Tenha em mente que a exceção é no método Open, onde você pode usar o nome do campo diretamente. Caso contrário, pode ser difícil alinhar corretamente. Se você se referir a um nome de campo sem usar o método FieldCaption(), digite o nome do campo sem aspas simples ou duplas.
+
+			•	Tente escrever todas as mensagens em apenas uma linha. Se desejar usar mais de uma linha, comece uma nova linha após um período em vez de no meio de uma frase.
+			•	Não insira o texto diretamente no código AL. Em vez disso, insira-o como um rótulo para que a mensagem possa ser traduzida.
+
+
+	• **Método Message**
+===================================================
+
+
+		O método Message é usado com frequência no Business Central e serve para comunicar informações ao usuário. Usando o método Message, você pode notificar seu usuário de que um determinado processo foi concluído ou mostrar a saída de uma expressão.
+
+		Exemplo:
+
+		al-language
+
+		Copy
+		Message(string [,Value1, ...]);
+
+		Message('Hello World');
+
+		Se sua string contiver espaços reservados, eles podem ser substituídos pelos valores que seguem a string.
+
+		al-language
+
+		Copy
+		var
+		    MyInt: Integer;
+		    TheValueOfTxt: Label 'O valor de %1 é %2';
+		begin
+		    MyInt := 5;
+		    Message(TheValueOfTxt, 'MyInt', MyInt);
+		    // Exibe: O valor de MyInt é 5
+		end;
+
+		O método Message é executado de forma assíncrona, o que significa que a mensagem não é exibida até que o método a partir do qual foi chamada termine ou outro método solicite a entrada do usuário. O método é útil para notificar o usuário de que algum processamento foi concluído com êxito.
+
+
+
+	• Método Confirm
+===========================================================
+
+		Quando você deseja executar apenas partes específicas do seu código após a confirmação do usuário, use a função Confirm. Você pode usar a função Confirm com base em uma string gerada a partir da pergunta feita ao usuário. A mensagem é exibida com botões Sim e Não.
+
+		Você pode selecionar qual botão deve receber o foco quando a janela aparecer. Essa regra pode ser definida com o segundo parâmetro. Se sua string contiver espaços reservados, eles podem ser substituídos por valores de outros parâmetros.
+
+		Exemplo:
+
+		al-language
+
+		Copy
+		Ok := Dialog.Confirm(string [,Default] [,Value1, ...]);
+
+		A função Confirm pode ser usada em combinação com uma instrução if.
+
+		al-language
+
+		Copy
+		if Confirm('Tem certeza de que deseja excluir?') then
+		   Message('OK')
+		else
+		   Message('Não OK');
+
+		Se você deseja que o botão Não tenha o foco padrão, adicione false como um parâmetro.
+
+		al-language
+
+		Copy
+		if Confirm('Tem certeza de que deseja excluir?', false) then
+		   Message('OK')
+		else
+		   Message('Não OK');
+
+	• Método StrMenu
+===========================================================
+
+		O método StrMenu pode ser usado para solicitar informações aos usuários e fornecer a eles uma seleção de opções.
+
+		Exemplo:
+
+		al-language
+
+		Copy
+		OptionNumber := StrMenu(OptionString [,DefaultNumber] [,Instruction]);
+
+		O exemplo a seguir mostra o método StrMenu sendo usado.
+
+		al-language
+
+		Copy
+		var
+		   Days: Text[50];
+		   Selection: Integer;
+		begin
+		   Days := 'Segunda-feira,Terça-feira,Quarta-feira,Quinta-feira,Sexta-feira';
+		   Selection := StrMenu(Days, 1, 'Qual dia é hoje?');
+		   Message('Você selecionou %1.', Selection);
+		end;
+
+		Se o usuário selecionar Quarta-feira, o sistema exibirá: Você selecionou 3.
+
+
+
+
+
+	• Método ERROR
+===========================================================
+
+		Se algo der errado ou determinadas condições não forem atendidas durante o processamento do código, você pode usar a mensagem Error para notificar o usuário. Após a mensagem Error, a execução do código é interrompida.
+
+		Exemplo:
+
+		al-language
+
+		Copy
+		Error(String [,Value1, ...]);
+
+		Por exemplo, o seguinte código gerará três mensagens ao usuário: 1, 2 e uma mensagem de erro OOPS!. Após a mensagem de erro, o sistema interrompe a execução do código. A quarta mensagem com o texto 3 nunca é exibida.
+
+		al-language
+
+		Copy
+		MESSAGE('1');
+		MESSAGE('2');
+		ERROR('OOPS !');
+		MESSAGE('3');
+
+		O método Error é semelhante ao método Message, exceto que quando o usuário reconhece a mensagem do método Error, a execução é encerrada. O método Error também é semelhante ao método FieldError. Para mais informações, consulte os métodos CalcFields, CalcSums, FieldError, FieldName, Init, TestField e Validate.
+```

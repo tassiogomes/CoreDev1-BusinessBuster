@@ -1,0 +1,146 @@
+
+
+        • Declarações Condicionais
+________________________________________________________________________________________________________________
+
+
+
+
+    •   In this module, you'll learn about the Codeunit object. Along with tables and pages, a codeunit is a core object of the Microsoft Dynamics 365 Business Central application.
+    
+    •   Codeunits group different procedures into one object. These procedures can be accessed from within other procedures and triggers on pages, tables, and other codeunits.
+    
+    •   A codeunit contains the following elements:
+            •   Triggers
+            •   Functions
+            •   Variables
+            •   Properties
+            •   Statements
+    
+    •   A codeunit contains only one trigger: OnRun. This trigger is always available and is implemented when you run a codeunit.
+    
+    •   By using the code snippets (tcodeunit) for creating a codeunit with Visual Studio Code, the OnRun trigger is automatically generated.
+    
+
+
+    •   Access property
+===================================================================
+
+            •   You can use the Access property on the codeunit to specify your codeunit as public or internal. 
+            •   A public codeunit can be called within the same extension but also from within other extensions. 
+            •   An internal codeunit can only be accessed from within the same extension.
+    
+
+
+
+    •   Subtype property
+===================================================================
+            •   The Subtype property has five available values:
+                    •   Normal - The default value for every new codeunit. This subtype is a regular codeunit. It has only one trigger: OnRun.
+                    •   Install - This type of codeunit will only be run during the installation of the extension package. This subtype provides access to two extra triggers.
+                    •   Upgrade - This type of codeunit will only be run during the upgrade process of an extension package. This subtype gives access to five extra triggers.
+                    •   Test - This subtype enables you to write unit test functions. You don't create normal functions in this codeunit because it can only run during unit testing.
+                    •   TestRunner - This subtype will run one or more Test codeunits.
+
+
+
+
+
+    •   To create a new codeunit, you can use the tcodeunit snippet. Make sure that you provide a number and a name for your codeunit. This step will help you access the functions within the codeunit by name.
+
+===================================================================
+    
+    al-language
+    Copy
+    codeunit 50100 MyCodeunit
+    {
+        Access = Public;
+        Subtype = Normal;
+
+        trigger OnRun()
+        begin
+            
+        end;
+
+        procedure MyFunction(Param1: Integer; Param2: Text[50]) : Boolean
+        begin 
+
+        end;
+    }
+
+
+
+
+
+    •   To access functions within a codeunit, first create a variable of type Codeunit. Then, you can access all codeunit functions (depending on their access properties).
+===================================================================
+    
+    al-language
+    Copy
+    codeunit 50101 MyCodeunit2
+    {
+        trigger OnRun()
+        var
+            MyCodeUnit1: Codeunit MyCodeunit;
+            Result: Boolean;
+        begin
+            Result := MyCodeUnit1.MyFunction(5, 'Test');
+        end;
+    }
+
+    •   You can also access a codeunit from within a page by using the RunObject property on an action.
+    
+    •   If you use the RunObject property, you can only run the OnRun trigger, not the other functions within the codeunit.
+    
+    al-language
+    Copy
+    actions
+    {
+        area(Processing)
+        {
+            action(ActionName)
+            {
+                ApplicationArea = All;
+                Image = NewSum;
+                Caption = 'ActionName';
+                ToolTip = 'Click to run MyCodeunit';
+                RunObject = codeunit MyCodeunit; 
+            }
+        }
+    }
+
+    •   To access the other functions, you can use the OnAction trigger.
+    
+    al-language
+    Copy
+    actions
+    {
+        area(Processing)
+        {
+            action(ActionName)
+            {
+                ApplicationArea = All;
+                Image = NewSum;
+                Caption = 'ActionName2';
+                ToolTip = 'Click to run MyCodeunit';
+                RunObject = codeunit MyCodeunit; 
+                trigger OnAction()
+                var 
+                    MyCodeunit1: Codeunit MyCodeunit;
+                begin 
+                    MyCodeunit1.MyFunction(2, 'Test 2');
+                end;
+            }
+        }
+    }
+
+
+• In general, write the code in codeunits instead of on the object on which it operates. A Codeunit in AL (Application Language) is a container for AL code that you can use in many application objects. You typically implement business logic in codeunits and call the codeunit from the object that needs to perform that specific logic. Think of it as a module or a library where you can group related procedures and functions. This encapsulation makes your code more organized, modular, and reusable.
+
+• This promotes a clean design and provides the ability to reuse code. It also helps enforce security. For example, typically users don't have direct access to tables that contain sensitive data, such as the General Ledger Entry table, nor do they have permission to modify objects. If you put the code that operates on the general ledger in a codeunit, give the codeunit access to the table, and give the user permission to run that codeunit. This way, security of the table won't be compromised and the user will be able to access the table.
+
+• If you must put code on an object instead of in a codeunit, then put the code as close as possible to the object on which it operates. For example, put code that modifies records in the triggers of the table fields.
+
+• Reusing code makes developing applications both faster and easier. More importantly, if you organize your AL code as suggested, your applications will be less prone to errors.
+
+• By centralizing the code, you won't unintentionally create inconsistencies by performing the same calculation in many places, for example, in several triggers that have the same table field as their source expression. If you have to change the code, you could either forget about some of these triggers or make a mistake when you modify one of them.

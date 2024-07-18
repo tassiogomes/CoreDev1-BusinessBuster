@@ -1,0 +1,267 @@
+
+	• List Functions
+________________________________________________________________________________________________________________	
+
+
+        Quando você trabalha com um tipo de dado de lista, várias funções podem ser aplicadas a esse tipo de dado. Essas funções podem ser usadas para adicionar ou remover itens de uma lista, determinar o comprimento da lista, encontrar um determinado item na lista, e assim por diante:
+
+
+
+        • Add(X)
+===================================================================
+        
+        A função Add(X) adiciona um item X ao final da lista.
+        
+        ```al-language
+        var 
+            myIntegerList: List of [Integer];
+
+        myIntegerList.Add(5);
+        myIntegerList.Add(2);
+        myIntegerList.Add(3);
+        ```
+
+
+        • Contains(X)
+===================================================================
+
+        
+        A função Contains(X) verifica se um item X existe na lista. Retorna um valor Booleano; true se encontrado, false se não encontrado.
+        
+        ```al-language
+        var 
+            myIntegerList: List of [Integer];
+            exists: Boolean;
+
+        myIntegerList.Add(5); 
+        exists := myIntegerList.Contains(5);
+        ```
+
+
+        • Get(index)
+===================================================================
+
+        
+        A função Get(index) obtém um item da lista por um determinado índice e retorna esse item.
+        
+        ```al-language
+        var 
+            myIntegerList: List of [Integer];
+            myInteger: Integer;
+
+        myIntegerList.Add(5); 
+        myIntegerList.Add(2);
+        myIntegerList.Add(1);
+        myIntegerList.Add(5);
+        myInteger := myIntegerList.Get(3);
+        // myInteger = 1
+        ```
+
+
+
+        • Set(index, X)
+===================================================================
+
+        
+        A função Set(index, X) atualiza um item na lista por um determinado índice. Define o valor X no item em um determinado índice.
+        
+        ```al-language
+        var 
+            myTextList: List of [Text];
+
+        myTextList.Add('HELLO '); 
+        myTextList.Add('DYNAMICS ');
+        myTextList.Add('BUSINESS ');
+        myTextList.Add('CENTRAL');
+        myTextList.Set(2, 'DYNAMICS 365 ');
+        ```
+
+
+        • Insert(index, X)
+===================================================================
+        
+        A função Insert(index, X) insere um item na lista em um determinado índice. Todos os próximos itens são movidos um índice para frente.
+        
+        ```al-language
+        var 
+            myTextList: List of [Text];
+
+        myTextList.Add('HELLO '); 
+        myTextList.Add('DYNAMICS ');
+        myTextList.Add('BUSINESS ');
+        myTextList.Add('CENTRAL');
+        myTextList.Insert(3, '365 ');
+        ```
+
+
+
+        • Remove(X)
+===================================================================
+
+        
+        A função Remove(X) remove a primeira ocorrência de um item na lista com base no valor de X. Esta função retorna um valor Booleano.
+        
+        ```al-language
+        var 
+            myTextList: List of [Text];
+
+        myTextList.Add('HELLO '); 
+        myTextList.Add('DYNAMICS ');
+        myTextList.Add('HELLO ');
+        myTextList.Add('CENTRAL');
+        if myTextList.Remove('HELLO ') then
+           Message('HELLO WAS REMOVED');
+
+        // myTextList: 'DYNAMICS ', 'HELLO ', 'CENTRAL'
+        ```
+
+
+
+        • RemoveAt(index)
+===================================================================
+
+        
+        A função RemoveAt(index) remove o item em um determinado índice. Esta função retorna um valor Booleano.
+        
+        ```al-language
+        var 
+            myTextList: List of [Text];
+
+        myTextList.Add('HELLO '); 
+        myTextList.Add('DYNAMICS ');
+        myTextList.Add('BUSINESS ');
+        myTextList.Add('CENTRAL');
+        if myTextList.RemoveAt(2) then
+           Message('Item at index 2 is removed.');
+
+        // myTextList: 'HELLO ', 'BUSINESS ', 'CENTRAL'
+        ```
+
+
+
+        • Count()
+===================================================================
+        
+        A função Count() retorna o número de itens em uma lista.
+        
+        ```al-language
+        var 
+            myTextList: List of [Text];
+
+        myTextList.Add('HELLO '); 
+        myTextList.Add('DYNAMICS ');
+        myTextList.Add('BUSINESS ');
+        myTextList.Add('CENTRAL');
+        Message('%1', myTextList.Count());
+        // Displays: 4
+        ```
+
+
+
+        • AddRange(X)
+===================================================================
+        
+        A função AddRange(X) adiciona múltiplos itens à lista ao mesmo tempo.
+        
+        ```al-language
+        var 
+            myTextList: List of [Text];
+
+        myTextList.AddRange('HELLO ', 'DYNAMICS 365 ', 'BUSINESS ', 'CENTRAL'); 
+        ```
+
+
+
+        • GetRange(index, count)
+===================================================================
+
+        
+        A função GetRange(index, count) recupera vários itens (count), começando em um determinado índice. O resultado é uma lista de [X].
+        
+        ```al-language
+        var 
+            myTextList: List of [Text];
+            myNewTextList: List of [Text];
+
+        myTextList.AddRange('HELLO ', 'DYNAMICS 365 ', 'BUSINESS ', 'CENTRAL');
+        myNewTextList := myTextList.GetRange(2,2);
+
+        // myNewTextList: 'DYNAMICS 365 ', 'BUSINESS '
+        ```
+
+
+
+        • RemoveRange(index, count)
+===================================================================
+        
+        A função RemoveRange(index, count) remove múltiplos itens (count), começando em um determinado índice. Esta função retorna um valor Booleano.
+        
+        ```al-language
+        var 
+            myTextList: List of [Text];
+
+        myTextList.AddRange('HELLO ', 'DYNAMICS 365 ', 'BUSINESS ', 'CENTRAL');
+        if myTextList.RemoveRange(2,2) then
+           Message('Items removed.');
+
+        // myTextList: 'HELLO ', 'CENTRAL'
+        ```
+
+
+
+        • IndexOf(X)
+===================================================================
+        
+        A função IndexOf(X) retorna o índice da primeira ocorrência de um item com base no valor de X.
+        
+        ```al-language
+        var 
+            myIntegerList: List of [Integer];
+            index: Integer;
+
+        myIntegerList.Add(5); 
+        myIntegerList.Add(2);
+        myIntegerList.Add(1);
+        myIntegerList.Add(5);
+        index := myIntegerList.IndexOf(5);
+        // index = 1
+        ```
+
+
+
+        • LastIndexOf(X)
+===================================================================
+        
+        A função LastIndexOf(X) retorna o último índice de um item com base no valor de X.
+        
+        ```al-language
+        var 
+            myIntegerList: List of [Integer];
+            index: Integer;
+
+        myIntegerList.Add(5); 
+        myIntegerList.Add(2);
+        myIntegerList.Add(1);
+        myIntegerList.Add(5);
+        index := myIntegerList.LastIndexOf(5);
+        // index = 4
+        ```
+
+
+
+        • Reverse
+===================================================================
+        
+        A função Reverse inverte a ordem dos elementos na lista.
+        
+        ```al-language
+        var 
+            myTextList: List of [Text];
+
+        myTextList.AddRange('HELLO ', 'DYNAMICS 365 ', 'BUSINESS ', 'CENTRAL');
+        myTextList.Reverse();
+
+        // myTextList: 'CENTRAL', 'BUSINESS ', 'DYNAMICS 365 ', 'HELLO '
+        ```
+    ```
+

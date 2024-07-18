@@ -1,0 +1,63 @@
+
+	• System Functions
+________________________________________________________________________________________________________________	
+
+
+
+        Funções do sistema são do tipo que você pode usar diretamente. Elas não estão relacionadas a um tipo de dado específico ou usadas para interação. Você pode encontrá-las em todo o sistema e usá-las em qualquer gatilho ou procedimento.
+
+        • UserID
+
+        • CompanyName
+
+        • Today
+
+        • Time
+
+        • WorkDate
+
+
+
+
+        • UserID e CompanyName functions
+===================================================================
+
+                • A função UserID é utilizada para saber quem está executando o código. Por exemplo, se você está postando um pedido e quer rastrear quem postou o pedido, a função UserID ajuda a realizar essa tarefa.
+
+                ```al-language
+                <Text> := UserId();
+                ```
+
+                • No banco de dados lógico, você pode ter uma ou várias empresas. Se você quiser descobrir o nome da empresa na qual o código está sendo executado, pode usar a função CompanyName. Esta função obtém o nome da empresa atual.
+
+                ```al-language
+                <Text> := CompanyName;
+                ```
+
+
+
+
+
+
+        • Today, Time, e WorkDate functions
+===================================================================
+
+
+                • Semelhante às funções Date2DMY e Date2DWY, a função Today é outra função de data que você pode usar para obter a data atual do sistema operacional.
+
+                ```al-language
+                <Date> := Today();
+                ```
+
+                • A função Time funciona da mesma maneira e retorna a hora atual do sistema operacional.
+
+                ```al-language
+                <Time> := Time();
+                ```
+
+                • Com a função WorkDate, você pode obter ou definir a data de trabalho para a sessão atual.
+
+                ```al-language
+                <Date> := WorkDate();   // Obter a data de trabalho
+                WorkDate(<Date>);       // Definir a data de trabalho
+                ```

@@ -1,0 +1,110 @@
+
+	• Date Functions
+________________________________________________________________________________________________________________	
+
+
+		No Business Central, muitos dados estão vinculados a datas. Pedidos de vendas, faturas ou notas de crédito têm datas de documento, datas de lançamento e datas de entrada. Você também pode encontrar datas no registro do cliente.
+
+
+
+	• Date2DMY e Date2DWY
+===================================================================
+
+		CalcDate
+
+		As funções Today e Time de data retornam a data e a hora atuais. A função WorkDate retorna a data de trabalho configurada na aplicação.
+
+	• Função Date2DMY
+===================================================================
+
+		A função Date2DMY (ou Data para Dia, Mês, Ano) ajuda a obter partes específicas de uma determinada data.
+
+		al-language
+
+		Copy
+		Número := Date2DMY(Data, O quê);
+		O parâmetro O quê especifica o que a função deve retornar.
+
+		1 - Corresponde ao Dia (1-31)
+
+		2 - Corresponde ao Mês (1-12)
+
+		3 - Corresponde ao Ano
+
+		al-language
+
+		Copy
+		// HOJE É 17/04/2020
+
+		Message('%1', Today()) ;
+		// Exibe: 17/04/2020
+
+		MeuParteData := Date2DMY(Today(), 1) ;
+		Message('%1', MeuParteData) ;
+		// Exibe: 17
+
+		MeuParteData := Date2DMY(Today(), 2) ;
+		Message('%1', MeuParteData) ;
+		// Exibe: 4
+
+
+
+	• Função Date2DWY
+===================================================================
+
+
+
+		A função Date2DWY (ou Data para Dia da semana, Semana, Ano) ajuda a obter partes específicas de uma determinada data.
+
+		al-language
+
+		Copy
+		Número := Date2DWY(Data, O quê);
+		O parâmetro O quê especifica o que a função deve retornar.
+
+		1 - Corresponde ao Dia da semana (1-7, segunda-feira = 1)
+
+		2 - Corresponde ao Número da semana (1-53)
+
+		3 - Corresponde ao Ano
+
+		al-language
+
+		Copy
+		// HOJE É 17/04/2020
+
+		Message('%1', Today()) ;
+		// Exibe: 17/04/2020
+
+		MeuParteData := Date2DWY(Today(), 1) ;
+		Message('%1', MeuParteData) ;
+		// Exibe: 5
+
+		MeuParteData := Date2DWY(Today(), 2) ;
+		Message('%1', MeuParteData) ;
+		// Exibe: 16
+
+
+
+	• Função CalcDate
+===================================================================
+
+		A função CalcDate ajuda a calcular novas datas, a partir de uma determinada data.
+
+		al-language
+
+		Copy
+		NovaData := CalcDate(ExpressãoData [, Data]);
+		No parâmetro ExpressãoData, você pode fornecer quantos dias (D), semanas (W), meses (M), trimestres (Q) ou anos (Y) deseja adicionar ou subtrair. Se você não fornecer um parâmetro Data, a data do sistema atual é usada.
+
+		al-language
+
+		Copy
+		// HOJE É 17/04/2020
+
+		Message('%1', Today()) ;
+		// Exibe: 17/04/2020
+
+		Message('%1', CalcDate('1W', Today())) ;
+		// Exibe: 24/04/2020
+

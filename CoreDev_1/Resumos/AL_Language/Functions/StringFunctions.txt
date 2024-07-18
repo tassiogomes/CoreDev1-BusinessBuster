@@ -1,0 +1,268 @@
+
+	• String Functions
+________________________________________________________________________________________________________________	
+
+
+
+	• *Funções de String
+================================================
+
+		Você não precisa de Interoperabilidade .NET para usar essas funções; elas estão integradas na linguagem AL.
+
+		Screenshot do suporte para funções de string .NET.
+
+	• Funções de StrPos e IndexOf
+=================================================
+
+
+		Com a função StrPos, você pode encontrar a posição de uma subcadeia dentro de uma string. Se a subcadeia for encontrada, a função StrPos retornará a posição como um inteiro. Portanto, se o valor retornado for maior que zero, a subcadeia existe.
+
+		al-language
+
+		Copy
+		Position := StrPos(Texto, Subcadeia);
+
+		O exemplo a seguir usa a função StrPos para determinar a primeira posição do caractere 'l' na variável MyLongString.
+
+		al-language
+
+		Copy
+		var 
+		    MyLongString: Text[50];    
+		begin
+		    MyLongString := 'HelloWorldOfManyManyCharacters';
+
+		    Message('%1', StrPos(MyLongString, 'l'));  // Resulta em 3
+		end;
+
+		Outra maneira de obter a posição de uma subcadeia é usando a função .IndexOf.
+
+		al-language
+
+		Copy
+		Position := Texto.IndexOf(Subcadeia,[PosiçãoInicial]);
+
+		O mesmo exemplo pode ser reescrito com IndexOf.
+
+		al-language
+
+		Copy
+		var 
+		    MyLongString: Text[50];    
+		begin
+		    MyLongString := 'HelloWorldOfManyManyCharacters';
+
+		    Message('%1', MyLongString.IndexOf('l'));  // Resulta em 3
+		end;
+
+	•	**Funções de CopyStr e Substring**
+
+		Com a função CopyStr, você pode copiar uma subcadeia de texto ou código. A função tem três parâmetros, sendo que o último é opcional.
+
+		al-language
+
+		Copy
+		NovaString := CopyStr(Texto, ÍndiceInicial, [Comprimento]);
+
+		O código no exemplo a seguir retornará uma subcadeia começando no quinto caractere. Ele retornará 10 caracteres. Se você não especificar um comprimento, ele retornará todos os caracteres até o final do texto.
+
+		al-language
+
+		Copy
+		var
+		    MyLongString: Text[50];
+		    NovaString: Text[10];
+		begin
+		    MyLongString := 'HelloWorldOfManyManyCharacters';
+
+		    NovaString := CopyStr(MyLongString, 5, 10);
+
+		    Message('%1', NovaString);  // Resulta em 'oWorldOfMa'
+		end;
+
+		Uma versão .NET chamada Substring também pode ser usada.
+
+		al-language
+
+		Copy
+		NovaString := MyLongString.Substring(5, 10);
+
+		Se você usar Substring, deve estar ciente de uma diferença importante. Se o parâmetro de comprimento for maior que o número disponível de caracteres na string, você receberá um erro com a função Substring. Com a função CopyStr, não gerará um erro, mas retornará uma string com os caracteres disponíveis.
+
+
+
+	• Funções de SelectStr e Split
+======================================================
+
+		A função SelectStr retorna uma string de um texto separado por vírgulas. No exemplo a seguir, a função SelectStr obtém a segunda string do texto separado por vírgulas.
+
+		al-language
+
+		Copy
+		 var
+		    MyLongString: Text[50];
+		    NovaString: Text;
+		begin
+		    MyLongString := 'This,is a comma,separated,string';
+
+		    NovaString := SelectStr(2, MyLongString);
+
+		    Message('%1', NovaString);  // Resulta em 'is a comma'
+		end;
+
+		Você também pode usar uma função de versão .NET chamada Split. Embora semelhante à função SelectStr, a função Split não funciona exatamente da mesma maneira. Ela aceita um parâmetro onde você pode especificar em quais caractere(s) deseja dividir. A função Split retorna uma função de Lista de [Texto], onde você pode especificar o índice do elemento que deseja recuperar.
+
+		al-language
+
+		Copy
+		var  
+		    MyLongString: Text[50];
+		    NovaString: Text;
+		begin
+		    MyLongString := 'This,is a comma,separated,string';
+
+		    NovaString := MyLongString.Split(',').Get(2);
+		    
+		    Message('%1', NovaString);  // Resulta em 'is a comma'
+		end;
+
+		A função Split pode dividir em vários caracteres. Se você modificar o exemplo para também dividir em um espaço em branco, obterá o seguinte resultado.
+
+		al-language
+
+		Copy
+		var
+		    MyLongString: Text[50];
+		    NovaString: Text;
+		begin
+		    MyLongString := 'This,is a comma,separated,string';
+
+		    NovaString := MyLongString.Split(',',' ').Get(2);
+		    
+		    Message('%1', NovaString);  // Resulta em 'is'
+		end;
+
+
+
+
+	• Função InsStr
+======================================================
+
+		A função InsStr irá inserir uma string em uma determinada posição em uma string existente.
+
+		al-language
+
+		Copy
+		var
+		    MyLongString: Text[50];
+		    NovaString: Text;
+		begin
+		    MyLongString := 'Pressione ENTER para continuar.';
+
+		    NovaString := InsStr(MyLongString, 'ou ESC ', 13);
+
+		    Message('%1', NovaString);  // Resulta em 'Pressione ENTER ou ESC para continuar.'
+		end;
+
+
+
+
+	• Funções de StrLen e MaxStrLen
+======================================================
+
+		As funções StrLen e MaxStrLen são usadas para determinar o comprimento de campos de texto e o comprimento máximo do campo de texto. Se você tiver uma variável do tipo Text[50], o MaxStrLen será 50, mesmo que o conteúdo tenha apenas 10 caracteres. O StrLen retornará 10.
+
+		Essas funções são frequentemente usadas em combinação com a função CopyStr para obter os caracteres máximos de uma string.
+
+		al-language
+
+		Copy
+		var
+		    MyLongString: Text[50];
+		    NovaString: Text[10];
+		begin
+		    MyLongString := GetLongString();
+
+		    Message('STRLEN: %1', StrLen(MyLongString)); // Resulta em 30 
+		    Message('MAXSTRLEN: %1', MaxStrLen(MyLongString)); // Resulta em 50 
+
+		    NovaString := CopyStr(MyLongString, 5, MaxStrLen(NovaString));
+
+		    Message('%1', NovaString);  // Resulta em 'oWorldOfMa'
+		end;
+
+
+
+	• Funções LowerCase, UpperCase, ToLower e ToUpper
+================================================================================
+
+		Se você deseja alterar o caso de uma variável de texto, pode usar as funções LowerCase e UpperCase ou as funções .NET ToLower e ToUpper.
+
+		al-language
+
+		Copy
+		var
+		    MyLongString: Text[50];
+		begin
+		    MyLongString := 'HelloWorldOfManyManyCharacters';
+
+		    Message('MAIÚSCULAS: %1', UpperCase(MyLongString));  
+		    // Resulta em 'HELLOWORLDOFMANYMANYCHARACTERS'
+		    Message('minúsculas: %1', LowerCase(MyLongString));  
+		    // Resulta em 'helloworldofmanymanycharacters'     
+
+		    Message('MAIÚSCULAS: %1', MyLongString.ToUpper());  
+		    // Resulta em 'HELLOWORLDOFMANYMANYCHARACTERS'
+		    Message('minúsculas: %1', MyLongString.ToLower());  
+		    // Resulta em 'helloworldofmanymanycharacters'    
+		end;
+
+	• Função IncStr
+======================================================
+
+
+		A função IncStr é usada para incrementar um número dentro de uma string. Se esse número for negativo, ele será diminuído em um.
+
+		Se esta string contiver mais de um número, apenas o número mais próximo do final da string será alterado.
+
+		al-language
+
+		Copy
+		var
+		    texto000: Texto;
+		    texto001: Texto;
+		begin
+		    texto000 := 'Conta nº 99 não fecha.';
+		    texto001 := 'Conta nº 2342 mostra um total de $-452.';
+
+		    Message(IncStr(texto000));
+		    // Resulta em: 'Conta nº 100 não fecha.'
+
+		    Message(IncStr(texto001));
+		    // Resulta em: 'Conta nº 2342 mostra um total de $-453.'
+		end;
+
+
+
+	• Outras funções de string .NET
+======================================================
+
+	O AL suporta algumas funções de string da classe de string .NET:
+
+		- Contains - Verifica se uma string contém um caractere ou substring.
+		- EndsWith - Verifica se uma string termina com um valor específico.
+		- IndexOf - Obtém o primeiro índice de um caractere ou string. Retorna zero se nenhum for encontrado.
+		- IndexOfAny - Obtém o primeiro índice de qualquer um dos caracteres. Retorna zero se nenhum for encontrado.
+		- LastIndexOf - Obtém o último índice de um caractere ou string. Retorna zero se nenhum for encontrado.
+		- PadLeft - Alinha à direita os caracteres na instância, preenchendo-os à esquerda para um comprimento total especificado. Você pode especificar qual caractere é usado para preenchimento.
+		- PadRight - Alinha à esquerda os caracteres na instância, preenchendo-os à direita para um comprimento total especificado. Você pode especificar qual caractere é usado para preenchimento.
+		- Remove - Remove uma substring de um texto.
+		- Replace - Substitui uma substring em um texto.
+		- Split - Divide um texto em um ou mais caracteres.
+		- StartsWith - Verifica se uma string começa com um valor específico.
+		- Substring - Retorna uma parte da string, começando em um índice específico com um comprimento determinado.
+		- ToLower - Esta função altera todos os caracteres para minúsculas.
+		- ToUpper - Esta função altera todos os caracteres para maiúsculas.
+		- Trim - Remove todos os espaços em branco à esquerda e à direita.
+		- TrimEnd - Remove todas as ocorrências finais de um conjunto de caracteres.
+		- TrimStart - Remove todas as ocorrências iniciais de um conjunto de caracteres.

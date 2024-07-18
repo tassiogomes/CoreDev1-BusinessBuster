@@ -1,0 +1,384 @@
+
+
+        • Declarações Repetitivas
+________________________________________________________________________________________________________________
+
+
+            • for-to-do
+            • for-downto-do
+            • foreach-in-do
+            • while-do
+            • repeat-until
+
+
+        • Instrução For
+===================================
+
+
+            • Uma das instruções repetitivas mais utilizadas é a instrução for. Se você usar a instrução for, já deve saber quantas vezes repetirá a implementação de instruções.
+
+            • No próximo exemplo, a instrução for é usada para executar um loop cinco vezes. A variável intCount contará o número de vezes que você fez o loop.
+
+                ```al-language
+                var
+                    intCount: Integer;
+                    total: Integer;
+                begin
+                    for intCount := 1 to 5 do
+                        total := total + 3;
+                end;
+                ```
+
+            • No exemplo seguinte, o número de loops é fixado usando um número (como 5). Você também pode usar outra variável inteira em vez de um valor fixo. Independentemente disso, a instrução for sabe, com antecedência, quantas vezes precisará fazer o loop.
+
+                ```al-language
+                var
+                    intCount: Integer;
+                    numberOfLoops: Integer;
+                    total: Integer;
+                begin
+                    numberOfLoops := 5;
+                    for intCount := 1 to numberOfLoops do
+                        total := total + 3;
+                end;
+                ```
+
+            • A instrução for só pode executar uma instrução. Se você quiser executar mais de uma instrução, precisa usar uma instrução composta com begin e end.
+
+
+
+
+
+        • Instrução For Downto
+===================================================
+
+
+
+            • Com a instrução for, você está contando para cima, o que significa que a instrução for incrementará o valor da variável. Você também pode decrementar usando a instrução for downto, que conta para baixo.
+
+            • Similar à instrução for, que só pode executar uma instrução, a instrução for downto só executa uma instrução. O próximo exemplo mostra a instrução composta sendo usada.
+
+                ```al-language
+                var
+                    intCount: Integer;
+                    totalSales: Integer;
+                    numberSales: Integer;
+                    sales: array[5] of Integer;
+                begin
+                    GetSales(sales);
+
+                    for intCount := 5 downto 1 do begin
+                        totalSales := totalSales + sales[intCount];
+                        numberSales := numberSales + 1;
+                    end;
+                end;
+                ```
+
+
+
+        • Instrução Foreach
+===========================================
+
+
+            • A instrução foreach só pode ser usada em coleções Enumerable (Lista de e Dicionário de), e não pode ser usada com arrays.
+
+            • Com a instrução foreach, a variável obterá o valor de um determinado item nas coleções. Cada loop será atribuído ao próximo valor.
+
+                ```al-language
+                var
+                    stringList: List of [Text[20]];
+                    stringItem: Text[20];
+                begin
+                    foreach stringItem in stringList do
+                        Message(stringItem);
+                end;
+                ```
+
+
+
+        • Instrução While
+=============================================
+
+
+            • A instrução while verifica primeiro se a condição é verdadeira antes de começar o loop. Desde que essa condição permaneça verdadeira, ela continuará executando as instruções dentro do bloco while.
+
+            • Consequentemente, é possível que as instruções não sejam executadas se a condição não for verdadeira na primeira vez.
+
+                ```al-language
+                var
+                    index: Integer;
+                    totalSales: Integer;
+                    sales: array[5] of Integer;
+                begin
+                    GetSales(sales);
+
+                    while totalSales < 8 do begin
+                        index := index + 1;
+                        totalSales := totalSales + sales[index];
+                    end;
+                end;
+                ```
+
+            • Se você quiser executar várias instruções, precisa usar uma instrução composta.
+
+
+
+
+        • Instrução Repeat Until
+=====================================================
+
+
+            • A instrução while verifica primeiro uma condição válida antes de iniciar o loop, enquanto a instrução repeat until executa primeiro e depois verifica a condição. Ela fará o loop até que a condição seja válida, o que significa que as instruções repeat until são executadas pelo menos uma vez. O loop continuará, desde que a condição não seja válida.
+
+            • A instrução repeat until é uma instrução única, e você coloca suas próprias instruções dentro do bloco. Isso significa que você não precisa usar uma instrução composta se quiser executar várias instruções.
+
+                ```al-language
+                var
+                    index: Integer;
+                    totalSales: Integer;
+                    sales: array[5] of Integer;
+                begin
+                    GetSales(sales);
+
+                    repeat
+                        index := index + 1;
+                        totalSales := totalSales + sales[index];
+                    until totalSales >= 8;
+                end;
+                ```
+
+            • A instrução repeat until é frequentemente usada quando você quer fazer o loop sobre um conjunto de registros. No próximo exemplo, você fará o loop sobre todas as linhas da tabela MyTable.
+
+                ```al-language
+                var
+                    myTable: Record MyTable;
+                begin
+                    myTable.FindSet();
+                    repeat
+                        myTable.Amount := 100;
+                    until myTable.Next() = 0;
+                end;
+                ```
+
+
+
+        • Instrução With
+================================================
+
+
+            • A instrução with às vezes é usada em combinação com uma instrução repetitiva, mas também pode ser usada como autônoma. O objetivo da instrução with é reduzir o uso de suas variáveis de registro. Esta estrutura é ilustrada no exemplo a seguir, onde uma variável myTable é criada e os campos dentro da tabela são todos atribuídos a um valor.
+
+                ```al-language
+                var
+                    myTable: Record MyTable;
+                begin
+                    myTable."No." := 1;
+                    myTable.Amount := 100;
+                    myTable.Credits := 10;
+                    myTable."Document Type" := myTable."Document Type"::Invoice;
+                    myTable.Reason := myTable.Reason::Return;
+                    myTable.Refund := 100;
+                end;
+                ```
+
+            • Em vez de digitar novamente a palavra myTable, você pode usar a instrução with.
+
+                ```al-language
+                var
+                    myTable: Record MyTable;
+                begin
+                    with myTable do begin
+                        "No." := 1;
+                        Amount := 100;
+                        Credits := 10;
+                        "Document Type" := "Document Type"::Invoice;
+                        Reason := Reason::Return;
+                        Refund := 100;
+                    end;
+                end;
+                ```
+
+            • Depreciação das Instruções With Explícitas e Implícitas
+                • O modelo de extensibilidade e a linguagem de programação AL são sucessores da linguagem C/AL. E a instrução with tem sido suportada até agora em AL.
+
+                • Embora o uso da instrução with possa tornar o código mais difícil de ler, também pode impedir que o código no Business Central seja atualizado sem alterações no código ou, pior ainda, atualizado com comportamento alterado.
+
+                • Distinguimos entre dois tipos de instruções with; o tipo explícito de with usando a palavra-chave, e o with implícito que não é expressamente expresso no código. As próximas seções descrevem cada um deles.
+
+
+            • Instruções With Explícitas
+=======================================================
+
+
+                • No Business Central online, seu código é recompilado quando as versões da plataforma e da aplicação são atualizadas. A recompilação garante que esteja funcionando e regenera os artefatos de tempo de execução para corresponder à nova plataforma. Alterações quebradiças sem aviso prévio não são permitidas, mas o uso da instrução with torna isso impossível, pois a Microsoft pode fazer alterações mesmo que sejam aditivas, sem quebrar completamente o código de consumo.
+
+                • O exemplo a seguir ilustra o código escrito usando a instrução with; referida neste contexto como a instrução with explícita:
+
+                    ```al-language
+                    codeunit 50140 MyCodeunit
+                    {
+                        procedure DoStuff()
+                        var
+                            Customer: Record Customer;
+                        begin
+                            with Customer do begin
+                                // Realizar algumas operações no registro Customer.
+                                Name := 'Foo';
+
+                                if IsDirty() then 
+                                    Modify();
+                            end;
+                        end; 
+
+                        local procedure IsDirty(): Boolean;
+                        begin
+                            exit(false);
+                        end;
+                    end;
+                    ```
+
+                • O procedimento DoStuff() processa operações no registro Customer e chama um procedimento local IsDirty() para verificar se deve atualizar o registro ou não. Olhando para o código acima, parece que não faz nada, já que IsDirty() retorna falso - assumindo que a chamada IsDirty() (linha 11) está de fato chamando o procedimento local IsDirty().
+
+                • Pesquisas de Símbolos
+                    • Considerando o exemplo de código acima novamente, o que aconteceria com esse código se IsDirty fosse adicionado à aplicação base entre duas versões? Para entender isso, precisamos examinar como os compiladores transformam a sintaxe em símbolos. Quando o compilador AL encontra a chamada IsDirty, ele deve vincular o nome da sintaxe a um símbolo de procedimento.
+
+                    • Quando o compilador AL procura pelo símbolo IsDirty() no exemplo acima, ele procurará na seguinte ordem:
+
+                        1. Tabela Customer
+                            • Membros definidos pelo usuário na tabela Customer e extensões da tabela Customer
+                            • Membros definidos pela plataforma, por exemplo, FindFirst() ou Modify()
+
+                        2. Codeunit MyCodeunit
+                            • Membros definidos pelo usuário, por exemplo, IsDirty()
+                            • Membros definidos pela plataforma
+
+                        3. Membros definidos globalmente
+
+                   
+
+ • A primeira vez que a pesquisa por IsDirty encontrar o nome IsDirty, ela não continuará para o próximo grupo de nível superior. Isso significa que, se um procedimento chamado IsDirty for introduzido na tabela Customer (plataforma ou aplicação), esse procedimento será encontrado em vez do procedimento no MyCodeunit.
+
+                • A solução para o with explícito é parar de usá-lo. Usar a instrução with pode tornar seu código vulnerável a mudanças a montante. O exemplo abaixo ilustra como reescrever o exemplo usando a instrução with explícita.
+
+                    ```al-language
+                    // Versão segura
+                    codeunit 50140 MyCodeunit
+                    {
+                        procedure DoStuff()
+                        var
+                            Customer: Record Customer;
+                        begin
+                            // Realizar algumas operações no registro Customer.
+                            Customer.Name := 'Foo';
+
+                            if IsDirty() then 
+                                Customer.Modify();
+                        end; 
+
+                        local procedure IsDirty(): Boolean;
+                        begin
+                            exit(false);
+                        end;
+                    end;
+                    ```
+
+
+            • A Instrução With Implícita
+=============================================================
+
+                • O with implícito é injetado automaticamente pelo compilador em certas situações. As próximas seções descrevem como isso funciona em codeunits e páginas.
+
+
+
+                • Codeunits
+==============================================================
+
+                    • Quando um codeunit tem a propriedade TableNo definida, há um with implícito em torno do código dentro do gatilho OnRun. Isso é indicado com os comentários no exemplo de código abaixo.
+
+                        ```al-language
+                        codeunit 50140 MyCodeunit
+                        {
+                            TableNo = Customer;
+
+                            trigger OnRun()
+                            begin
+                                // with Rec do begin
+                                SetRange("No.", '10000', '20000');
+                                if Find() then
+                                    repeat
+                                    until Next() = 0;
+
+                                if IsDirty() then
+                                    Error('Algo não está limpo');
+                                // end;
+                            end;
+
+                            local procedure IsDirty(): Boolean;
+                            begin
+                                exit(false);
+                            end;
+                        end;
+                        ```
+
+                    • Similar à instrução with explícita, o código parece que chamará o método local IsDirty, mas dependendo da tabela Customer, extensões da tabela Customer e métodos integrados, isso pode não ser o caso. Se algum desses implementar um método IsDirty com uma assinatura idêntica que retorna verdadeiro, então o exemplo acima falhará com um erro. Se um método IsDirty com uma assinatura diferente for implementado, este código não será compilado e falhará na atualização.
+
+                • Páginas
+                    • As páginas em tabelas têm o mesmo tipo de with implícito, mas em torno de todo o objeto. Em qualquer lugar dentro do objeto da página, os campos e métodos das tabelas de origem estão diretamente disponíveis sem qualquer prefixo.
+
+                        ```al-language
+                        page 50143 ImplicitWith
+                        {
+                            SourceTable = Customer;
+
+                            layout
+                            {
+                                area(Content)
+                                {
+                                    field("No."; "No.") { }
+                                    field(Name; Name)
+                                    {
+                                        trigger OnValidate()
+                                        begin
+                                            Name := 'test';
+                                        end;
+                                    }
+                                }
+                            }
+
+                            trigger OnInit()
+                            begin
+                                if IsDirty() then Insert()
+                            end;
+
+                            local procedure IsDirty(): Boolean;
+                            begin
+                                exit(Name <> '');
+                            end;
+                        end;
+                        ```
+
+                    • Nas páginas, não é apenas o código em gatilhos e procedimentos que é abrangido pelo with implícito na tabela Record; também as expressões de origem para os campos são cobertas.
+
+            • Com ou sem – isso não é uma questão
+                • Aqui neste repositório GitHub, você pode encontrar mais exemplos e código: BCTech/samples/WithOrWithout/
+
+
+
+
+        • Instrução Break
+=============================================
+            • Se você quiser interromper a execução de um loop, pode usar a instrução break.
+
+                ```al-language
+                var
+                    intCount: Integer;
+                    total: Integer;
+                begin
+                    for intCount := 1 to 5 do begin
+                        if (total > 8) then
+                            break;
+
+                        total := total + 3;
+                    end;
+                end;
+                ```

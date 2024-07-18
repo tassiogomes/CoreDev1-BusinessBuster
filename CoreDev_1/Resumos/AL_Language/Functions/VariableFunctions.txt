@@ -1,0 +1,71 @@
+
+	• Variable Functions
+________________________________________________________________________________________________________________	
+
+
+
+
+        Quando você executa código no Business Central, as variáveis são inicializadas pela primeira vez com seu valor padrão. 
+
+        • Você pode querer reinicializá-las em ocasiões quando estiver trabalhando em um loop e precisar que as variáveis tenham seus valores padrão.
+
+        • Funções de variáveis incluem:
+
+                • Clear
+
+                • ClearAll
+
+        Quando você trabalha com variáveis, cada uma com um tipo de dado diferente, e deseja atribuir um valor de um tipo de dado para outro, use as conversões automáticas de tipo. Se essa opção não for possível, use as seguintes funções:
+
+                • Evaluate
+
+                • Format
+
+        • Clear e ClearAll functions
+
+                • A função Clear ajuda a limpar ou redefinir uma variável. Esta função reinitializa o valor padrão para a variável.
+
+                ```al-language
+                var
+                   myText: Text[20];
+
+                myText := UserId;
+                Clear(myText);      // Define a variável myText para uma string vazia.
+                ```
+
+                • A função ClearAll redefine todas as variáveis (exceto a variável Rec) para seus valores padrão. Também limpa todas as chaves e filtros que foram definidos.
+
+        • Evaluate function
+
+                • Você pode usar a função Evaluate para converter uma variável do tipo de dado texto (código ou texto) para outro tipo de dado (que não seja texto).
+
+                ```al-language
+                <Boolean> := Evaluate(<variable>, <Text to convert>)
+                ```
+
+                ```al-language
+                var
+                   myText: Text[20];
+                   myInteger: Integer;
+
+                myText := '5';
+                Evaluate(myInteger, myText);
+                ```
+
+        • Format function
+
+                • A função Format converte um tipo de dado para um tipo de dado texto.
+
+                ```al-language
+                <String> := Format(<variable>)
+                ```
+
+                ```al-language
+                var
+                   myText: Text[20];
+                   myInteger: Integer;
+
+                myInteger := 3;
+                myText := Format(myInteger);
+                ```
+                ```

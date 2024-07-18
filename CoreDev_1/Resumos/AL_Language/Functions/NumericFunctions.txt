@@ -1,0 +1,115 @@
+
+	• Numeric Functions
+________________________________________________________________________________________________________________	
+
+
+		Quando você trabalha com dados numéricos, pode ser útil usar funções. Imagine que você está trabalhando com valores numéricos e deseja realizar um cálculo em um valor e, em seguida, arredondar o resultado. A função Round pode ser usada para concluir essa tarefa. Funções adicionais também estão disponíveis para você usar ao trabalhar com dados numéricos.
+
+		Funções numéricas incluem:
+
+		• Round
+
+		• Abs
+
+		• Power
+
+		• Random
+
+		• Randomize
+
+
+
+	• **Função Round**
+===================================================================
+
+		A função Round ajuda a arredondar um número. Como parâmetro, você pode fornecer a precisão e a direção.
+
+		al-language
+
+		Copy
+		NewNumber := Round(Number [, Precision] [, Direction]);
+		O número e a precisão são tipos de dados decimais. A precisão é um parâmetro opcional e usa a função ReadRounding da CodeUnit 1, Application Management, por padrão.
+
+		O parâmetro Direction é um tipo de dado de texto e pode ter os seguintes valores:
+
+		'=' - Arredonda para cima ou para baixo para o valor mais próximo (padrão). Valores de cinco ou mais são arredondados para cima; valores menores que cinco são arredondados para baixo.
+
+		'>' - Arredonda para cima
+
+		'<' - Arredonda para baixo
+
+		al-language
+
+		Copy
+		NewNumber := Round(1234.56789, 0.001, '>');
+		Message('%1', NewNumber);
+		// Exibe: 1,234.568
+
+
+
+	• **Funções Abs e Power**
+===================================================================
+
+
+		A função Abs calcula o valor absoluto de um número. O valor absoluto de um número retorna um valor numérico positivo ou zero.
+
+		al-language
+
+		Copy
+		NewNumber := Abs(Number);
+
+		Exemplo:
+
+		NewNumber := Abs(-10.235);
+
+		Message('%1', NewNumber);
+
+		// Exibe: 10.235
+
+
+
+	• **Função Power**
+===================================================================
+
+
+		A função Power é usada para elevar um número a uma potência. Por exemplo, você pode usar essa função para elevar o número 2 ao quadrado e obter um resultado de 4.
+
+		al-language
+
+		Copy
+		NewNumber := System.Power(Number: Decimal, Power: Decimal)
+		O exemplo a seguir mostra a função Power.
+
+		al-language
+
+		Copy
+		var
+			Number1: Decimal;
+			Power1: Decimal;
+			Result1: Decimal;
+			Text000: Label '%1 raised to the power of %2 = %3';
+		begin
+			Number1 := 64;   
+			Power1 := 0.5;  
+			Result1 := POWER(Number1, Power1);  
+			MESSAGE(Text000, Number1, Power1, Result1);
+		end;
+
+
+
+	• **Funções Random e Randomize**
+===================================================================
+
+
+		A função Random é usada para criar um novo número aleatório. Antes de executar a função Random, você também pode executar a função Randomize, com um valor de semente. Essa ação garante que, ao executar a função Random em um loop, ele gerará um novo número aleatório.
+
+		Se você não especificar um valor de semente, ele usará os dados do relógio do sistema como valor de semente.
+
+		A função Random recebe um parâmetro que especifica o maior número aceitável. Ela retornará um número entre um e o valor MaxNumber. Se MaxNumber for zero, essa função sempre retornará 1. Um MaxNumber negativo será tratado como um número positivo.
+
+		al-language
+
+		Copy
+		Randomize([Seed])
+		Number := Random(MaxNumber);
+```

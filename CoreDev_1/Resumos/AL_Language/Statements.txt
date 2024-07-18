@@ -1,0 +1,81 @@
+
+	• Identificadores, Sintaxe e Variáveis no AL
+________________________________________________________________________________________________________________
+
+
+• Comment
+=============
+
+        • Comentários no Código
+
+                • Comentar o código é uma boa prática para explicar e descrever seu funcionamento.
+                • Comentários não são considerados como código e ajudam outros desenvolvedores a entenderem o que foi escrito.
+
+        • Tipos de Comentários:
+
+                • Comentário de Linha: Use duas barras (//).
+                • Comentário de Bloco: Use /* e */ para comentar múltiplas linhas.
+
+        • Comentários XML:
+
+                • Adicionam documentação diretamente no código.
+                • Usam três barras (///) seguidas de tags XML suportadas.
+                • Melhoram a legibilidade e fornecem documentação inline com suporte a IntelliSense.
+
+        • Exemplo de Comentário XML:
+
+                • <summary>: Descreve o que o código faz.
+                • <param>: Documenta parâmetros de métodos.
+
+
+        • Exemplo de Código com Comentários XML:
+
+                /// <summary>
+                /// Provides functionality to create and send e-mails.
+                /// </summary>
+                codeunit 8901 "Email"
+                {
+                    Access = Public;
+                    /// <summary>
+                    /// Enqueues an email in the outbox to be sent in the background.
+                    /// </summary>
+                    /// <param name="EmailMessageId">The ID of the email to enqueue</param>
+                    procedure Enqueue(EmailMessageId: Guid)
+                    begin
+                        EmailImpl.Enqueue(EmailMessageId);
+                    end;
+                ...
+                }
+
+	
+
+
+• Compound
+===============
+
+        • Declarações Compostas
+
+                • Uma declaração composta é uma declaração que consiste em várias declarações.
+                • Declarações compostas são indicadas por begin e end, e tudo que está entre eles é uma única declaração composta.
+
+        • Exemplo de Declaração Composta em AL:
+
+                al-language
+                Copy
+                begin
+                  statement 1;
+                  statement 2;
+                  statement 3;
+                  ...
+                end
+
+
+
+
+
+
+
+
+Conditional
+
+Repetitive

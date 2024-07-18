@@ -1,0 +1,168 @@
+
+
+        • Declarações Condicionais
+________________________________________________________________________________________________________________
+
+
+        • IF
+=====================
+
+                • A declaração condicional mais comum é a declaração if.
+
+                al-language
+                Copy
+                var 
+                    a: Integer;
+                    b: Integer;
+                    c: Integer;
+                begin
+                    a := 10;
+                    b := 5;
+
+                    if a > b then
+                        c := a - b;
+                end;
+
+                • Se a condição a > b for verdadeira, a variável c será atribuída o valor de a - b.
+
+                • Para executar múltiplas instruções quando a condição é verdadeira, use uma declaração composta.
+
+                al-language
+                Copy
+                var
+                    a: Integer;
+                    b: Integer;
+                    c: Integer;
+                begin
+                    a := 10;
+                    b := 5;
+
+                    if a > b then begin
+                        c := a - b;
+                        Message('%1', c);
+                    end;
+                end;
+
+
+
+        • If-then-else
+======================================
+
+                • A declaração if pode ser combinada com uma declaração else.
+
+                al-language
+                Copy
+                var
+                    a: Integer;
+                    b: Integer;
+                    c: Integer;
+                begin
+                    a := 10;
+                    b := 5;
+
+                    if a > b then
+                        c := a - b
+                    else
+                        c := a + b;
+                end;
+
+                • Também é possível usar declarações compostas em uma estrutura if-then-else.
+
+                al-language
+                Copy
+                var
+                    a: Integer;
+                    b: Integer;
+                    c: Integer;
+                begin
+                    a := 10;
+                    b := 5;
+
+                    if a > b then begin
+                        c := a - b;
+                        Message('%1', c);
+                    end
+                    else begin
+                        c := a + b;
+                        Message('%1', c);
+                    end;
+                end;
+
+                • É possível aninhar declarações if dentro de outras declarações if.
+
+                al-language
+                Copy
+                begin
+                    if Amount <> 0 then
+                        if Amount > 0 then
+                            Sales := Sales + Amount
+                        else
+                            if Reason = Reason::Return then
+                                if ReasonForReturn = ReasonForReturn::Defective then
+                                    Refund := Refund + Amount
+                                else
+                                    Credits := Credits + Amount
+                            else
+                                Sales := Sales - Amount;
+                end;
+
+        • Convenções de Programação
+
+                • If e then devem estar na mesma linha, else deve estar em uma linha separada.
+                • Se houver muitas ou longas expressões, then deve estar em uma nova linha e alinhado com if.
+                • Escreva as expressões if com as partes then e else de forma que o resultado then seja mais provável que o else.
+                • Se a última instrução na parte then de uma declaração if-then-else for um exit ou um error, não continue com uma declaração else.
+
+
+
+
+        • CASE
+==================================
+
+
+                al-language
+                Copy
+                var
+                    a: Integer;
+                begin
+                    case "Document Type" of
+                        "Document Type"::Quote:
+                            a := 1 + 1;
+                        "Document Type"::Order:
+                            a := 2 + 1;
+                        "Document Type"::Invoice:
+                            begin
+                                // Some statement 1;
+                                // Some statement 2;
+                                // Some statement 3;
+                                a := 3 + 1;
+                            end;
+                        "Document Type"::"Return Order":
+                            if Reason = Reason::Return then begin
+                                // Some statement 1;
+                                // Some statement 2;
+                                // Some statement 3;
+                                a := 4 + 1;                
+                            end;
+                        else
+                            a := 5 + 1;
+                    end;
+                end;
+
+                • Declarações case são chamadas de declarações de múltiplas opções e são usadas quando você deve escolher entre mais de duas ações diferentes.
+                • A expressão é avaliada e o primeiro conjunto de valores correspondente executa a instrução associada.
+                • Se nenhum conjunto de valores corresponder ao valor da expressão e a parte else opcional tiver sido omitida, então nenhuma ação é tomada. Se a parte else opcional for usada, então a instrução associada é executada.
+                • O tipo de dado dos conjuntos de valores deve ser o mesmo que o tipo de dado da expressão ou pelo menos ser convertível para o mesmo tipo de dado.
+                • Em caso de variáveis do tipo Code, os conjuntos de valores não são convertidos para o tipo Code.
+
+
+        • Convenções de Programação - Declarações Case
+
+                • Quando usar uma declaração case, indente os conjuntos de valores por quatro espaços de caractere. 
+                • Se houver dois ou mais conjuntos de valores na mesma linha, separe-os por vírgulas sem espaços.
+                • O último conjunto de valores em uma linha é seguido imediatamente por dois-pontos sem espaço precedente.
+                • A ação começa na linha após o conjunto de valores e é ainda mais indentada por quatro espaços de caractere.
+                • Se houver um begin, ele deve estar em uma linha separada, a menos que siga um else. 
+                • Se um begin seguir um else, ele deve estar na mesma linha que o else.
+                • Se houver mais de duas alternativas, use uma declaração case. Caso contrário, use uma declaração if-then-else.
+```

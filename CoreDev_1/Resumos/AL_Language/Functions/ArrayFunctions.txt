@@ -1,0 +1,109 @@
+
+	• Array Functions
+________________________________________________________________________________________________________________	
+
+
+    • Array functions
+
+    Quando você trabalha com um tipo de dado de array, várias funções podem ser aplicadas a esse tipo de dado. Essas funções podem ser usadas para determinar o comprimento de um array ou para copiar um array inteiro ou parte dele:
+
+
+
+
+    • ArrayLen
+===================================================================
+
+
+    A função ArrayLen retorna o número de elementos atuais em um array.
+    
+    ```al-language
+    Length := ArrayLen(Array [,Dimension]);
+    ```
+
+    Exemplo:
+    ```al-language
+    SaleAmount: array[10] of Integer;
+
+    Length := ArrayLen(SaleAmount);
+    Message('%1', Length);
+    // Displays : 0
+
+    SaleAmount[1] := 1;
+    SaleAmount[2] := 2;
+    SaleAmount[3] := 3;
+    SaleAmount[1] := 10;
+
+    Length := ArrayLen(SaleAmount);
+    Message('%1', Length);
+    // Displays : 3
+    ```
+
+
+    • CompressArray
+===================================================================
+
+
+    A função CompressArray move todas as strings não vazias em um array para o início do array.
+
+    ```al-language
+    Count := CompressArray(StringArray);
+    ```
+
+    Exemplo:
+    ```al-language
+    MyArray: array[4] of Text[20];
+
+    MyArray[1] := 'Paris';
+    MyArray[2] := 'Rome';
+    MyArray[3] := '';
+    MyArray[4] := 'New York City';
+
+    CompressArray(MyArray);
+
+    /* Results :
+       MyArray[1] = 'Paris';
+       MyArray[2] = 'Rome';
+       MyArray[3] = 'New York City';
+       MyArray[4] = ''; 
+    */
+    ```
+
+
+
+
+    • CopyArray
+===================================================================
+
+    A função CopyArray cria um novo array com base em um existente. Você pode fornecer uma posição inicial e, opcionalmente, um comprimento. Se você não fornecer um comprimento, a função copiará todos os elementos até o final, a partir da posição inicial.
+
+    ```al-language
+    CopyArray(NewArray, Array, Position [, Length]);
+    ```
+
+    Exemplo:
+    ```al-language
+    MyArray1: array[10] of Integer;
+    MyArray2: array[5] of Integer;
+
+    MyArray1[1] := 1;
+    MyArray1[2] := 2;
+    MyArray1[3] := 3;
+    MyArray1[4] := 4;
+    MyArray1[5] := 5;
+    MyArray1[6] := 6;
+    MyArray1[7] := 7;
+    MyArray1[8] := 8;
+    MyArray1[9] := 9;
+    MyArray1[10] := 10;
+
+    CopyArray(MyArray2, MyArray1, 6, 5);
+
+    /* Results :
+       MyArray2[1] = 6;
+       MyArray2[2] = 7;
+       MyArray2[3] = 8;
+       MyArray2[4] = 9;
+       MyArray2[5] = 10;
+    */
+    ```
+
