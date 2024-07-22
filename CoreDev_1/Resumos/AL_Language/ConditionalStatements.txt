@@ -88,7 +88,8 @@ ________________________________________________________________________________
                     end;
                 end;
 
-                • É possível aninhar declarações if dentro de outras declarações if.
+                • Nested
+===================================================
 
                 al-language
                 Copy
@@ -105,6 +106,23 @@ ________________________________________________________________________________
                             else
                                 Sales := Sales - Amount;
                 end;
+
+
+Nested IF Statements
+IF Amount O THEN
+        IF Amount > O THEN
+                Sales := Sales + Amount
+        ELSE
+                IF Reason = Reason::Return T HEN
+                IF ReasonForReturn = ReasonForReturn::Defective THEN
+                        Refund := Refund + Amount
+        ELSE
+                Credits := Credits + Amount
+ELSE
+        Sales Sales - Amount;
+
+
+
 
         • Convenções de Programação
 
