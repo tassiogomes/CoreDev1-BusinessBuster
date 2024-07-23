@@ -55,7 +55,10 @@ ________________________________________________________________________________
 		    Message('%1', MyLongString.IndexOf('l'));  // Resulta em 3
 		end;
 
+
+
 	•	**Funções de CopyStr e Substring**
+================================================================================
 
 		Com a função CopyStr, você pode copiar uma subcadeia de texto ou código. A função tem três parâmetros, sendo que o último é opcional.
 

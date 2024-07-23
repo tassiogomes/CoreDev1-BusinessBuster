@@ -1,0 +1,427 @@
+
+	• Data Manipulation
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________	
+
+
+
+
+        • **Get Function**
+===================================================================
+
+
+            • Recupera um registro com base na chave primária.
+            • Se a chave primária for composta, forneça todos os campos na ordem da definição da chave primária.
+            • Exemplo:
+                ```al
+                var
+                    customer: Record Customer;
+                begin
+                    if customer.Get('30000') then
+                        Message('%1', customer.Name)
+                    else
+                        Error('Customer not found');
+                end;
+                ```
+
+
+
+
+        • **Find Function**
+===================================================================
+
+
+            • **Find('-')**: Recupera o primeiro registro, menos eficiente.
+            • **Find('+')**: Recupera o último registro, menos eficiente.
+            • **FindFirst()**: Recupera o primeiro registro de forma otimizada.
+            • **FindLast()**: Recupera o último registro de forma otimizada.
+            • Exemplo:
+                ```al
+                var
+                    customer: Record Customer;
+                begin
+                    customer.FindFirst(); // Recupera o primeiro registro
+                    Message('%1', customer.Name);
+                    
+                    customer.FindLast(); // Recupera o último registro
+                    Message('%1', customer.Name);
+                end;
+                ```
+
+
+
+
+        • **FindSet Function**
+===================================================================
+            • Recupera um conjunto de registros com base em filtros.
+            • Use `FindSet()` quando precisar processar múltiplos registros.
+            • Exemplo:
+                ```al
+                var
+                    customer: Record Customer;
+                begin
+                    customer.FindSet(); // Recupera um conjunto de registros
+                    repeat
+                        Message('%1', customer.Name);
+                    until customer.Next() = 0;
+                end;
+                ```
+
+
+
+
+        • **Next Statement**
+===================================================================
+
+            • Utilizado para obter o próximo registro em um conjunto de registros.
+            • Pode ser usado em um loop `repeat until`.
+            • O parâmetro opcional define quantos passos avançar. Por exemplo, um valor de 3 sempre obtém cada terceiro registro na lista.
+            • Exemplo:
+                ```al
+                var
+                    customer: Record Customer;
+                begin
+                    customer.FindSet(); // Recupera um conjunto de registros
+                    repeat
+                        Message('%1', customer.Name);
+                    until customer.Next() = 0;
+                end;
+                ```
+
+
+
+
+
+        • **IsEmpty Function**
+===================================================================
+
+            • Verifica se um registro existe sem recuperá-lo.
+            • Melhora a eficiência quando você só precisa verificar a existência de um registro.
+
+
+
+
+
+	• SQL
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+
+        • **Métodos AL e Desempenho no SQL Server**
+            • A linguagem AL oferece vários métodos para recuperar dados de registros.
+            • No Dynamics 365 Business Central, os registros são recuperados usando conjuntos de resultados ativos múltiplos (MARS).
+            • Geralmente, a recuperação de registros com MARS é mais rápida do que com cursores do lado do servidor.
+            • Cada função é otimizada para um propósito específico. Para alcançar o desempenho ideal, use o método que melhor se adequa ao propósito específico.
+
+        • **Record.Get**
+            • Otimizado para obter um único registro com base nos valores da chave primária.
+
+        • **Record.Find**
+            • Otimizado para obter um único registro com base nas chaves primárias no registro e qualquer filtro ou intervalo definido.
+
+        • **Record.Find('-') e Record.Find('+')**
+            • Otimizado para leitura principalmente de uma única tabela quando a aplicação pode não ler todos os registros.
+            • `Find('-')` é implementado emitindo uma chamada TOP X autoajustável, onde X pode mudar com o tempo, baseado em estatísticas do número de linhas lidas.
+            • Exemplos de uso do `Find('-')` para alcançar desempenho ideal:
+                • Antes de postar um lote de diário geral, você deve verificar todas as linhas do diário para validade e garantir que todas as linhas estejam equilibradas. Após a primeira linha quando um erro é encontrado, você não precisa recuperar o restante das linhas.
+                • Se você quiser atender a múltiplos pedidos pendentes de uma compra recente, mas não sabe quantos pedidos estão cobertos pela compra.
+
+        • **Record.FindSet(ForUpdate, UpdateKey)**
+            • Otimizado para ler o conjunto completo de registros no filtro e intervalo especificados.
+            • O parâmetro UpdateKey não influencia a eficiência deste método no Dynamics 365 Business Central, como fazia nas versões mais antigas do produto.
+            • `FindSet` não é implementado emitindo uma chamada TOP X.
+
+        • **Record.FindFirst e Record.FindLast**
+            • Otimizado para encontrar o único primeiro ou último registro no filtro e intervalo especificado.
+
+        • **Record.Next**
+            • Pode ser chamado a qualquer momento.
+            • Se `Record.Next` não for chamado como parte da recuperação de um conjunto contínuo de resultados, então o Business Central chama uma instrução SQL separada para encontrar o próximo registro.
+
+
+
+
+
+		ORDENAR E FILTRAR
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+
+
+
+        • **Ordenar Dados com SetCurrentKey**
+===================================================================
+
+            • Para ordenar registros, use a função `SetCurrentKey`, onde você pode especificar o(s) campo(s) pelo qual deseja ordenar.
+            • Exemplo:
+                ```al
+                var
+                    customer: Record Customer;
+                begin
+                    customer.SetCurrentKey(City);
+                    customer.FindFirst();
+                    Message('%1', customer);
+                end;
+                ```
+
+
+
+        • **Filtrar Dados com SetRange e SetFilter**
+===================================================================
+            • Além de ordenar, você também pode filtrar os resultados. Usar esses métodos é mais eficiente do que recuperar todos os dados do banco de dados.
+
+            • **SetRange**
+                • Especifica um valor inicial e final para um campo específico. Não pode ser usado para buscar registros onde o valor do campo é maior ou menor que um valor específico.
+                • Exemplo:
+                    ```al
+                    customer.SetRange("No.", '10000', '40000');
+                    customer.FindSet();
+                    repeat
+                        Message('%1', customer);
+                    until customer.Next() = 0;
+                    ```
+                • Omitir `ToValue` faz com que você busque todos os registros onde o campo é igual a `FromValue`.
+                • Omitir ambos `FromValue` e `ToValue` remove o filtro no campo especificado.
+                • Exemplo para remover filtro:
+                    ```al
+                    customer.SetRange("No."); // Remove filtro no campo "No."
+                    customer.FindSet();
+                    repeat
+                        Message('%1', customer);
+                    until customer.Next() = 0;
+
+
+                    ```
+
+            • **SetFilter**
+===================================================================
+
+
+                • Aceita uma string de valor onde você pode especificar suas condições de filtragem, tais como:
+                    • `>`, `<`, `<=`, `>=`, `*`, `..` (intervalo), `&` (e), `|` (ou) e mais.
+                • Exemplo para filtro com condições:
+                    ```al
+                    customer.SetFilter("No.", '> 10000 & <> 20000');
+                    ```
+                • Alternativamente, você pode usar placeholders:
+                    ```al
+                    value1 := '10000';
+                    value2 := '20000';
+                    customer.SetFilter("No.", '>%1&<>%2', value1, value2);
+                    ```
+
+
+
+            • **Filtros Múltiplos**
+===================================================================
+
+
+                • Para buscar e filtrar em múltiplos campos, especifique múltiplas declarações `SetRange` e/ou `SetFilter`.
+                • Exemplo:
+                    ```al
+                    customer.SetRange("No.", '10000', '90000');
+                    customer.SetFilter(City, '@B*');
+                    customer.SetFilter("Country/Region Code", 'B*');
+                    customer.FindSet();
+                    repeat
+                        Message('%1', customer);
+                    until customer.Next() = 0;
+                    ```
+                • Exemplo de filtro com "ou" (`|`):
+                    ```al
+                    customer.SetFilter("No.", '10000|20000|30000');
+                    ```
+
+
+        • **Verificar Existência de Registros com IsEmpty**
+===================================================================
+
+
+            • Use `IsEmpty` para verificar se algum registro corresponde aos seus filtros sem precisar recuperar o registro.
+            • Exemplo:
+                ```al
+                DocumentNo := '10000';
+                SalesLine.SetRange("Document No.", DocumentNo);
+                if SalesLine.IsEmpty() then
+                    Message('No sales line records found for document %1', DocumentNo);
+                ```
+
+
+
+
+
+
+		ADD, MODIFY OR DELETE
+============================================================================================================================================================================================================================================================================
+
+
+
+        • **Adicionar Dados com Insert**
+===================================================================
+
+
+            • A instrução `Insert` é usada para adicionar novos registros ao banco de dados. Antes de inserir, defina os valores para cada campo que deseja armazenar.
+            • A instrução `Insert`, assim como as instruções `Modify` e `Delete`, aceita o parâmetro `RunTrigger` do tipo Boolean. Por padrão, o valor é `false`.
+            • Se o parâmetro for `false`, a instrução `Insert` não executa o gatilho `OnInsert` no nível da tabela. Defina o valor como `true` se desejar que o gatilho `OnInsert` seja executado.
+            • Exemplo:
+                ```al
+                var
+                    customer: Record Customer;
+                begin
+                    customer.Init();
+                    customer."No." := '4711';
+                    customer.Name := 'John Doe';
+                    customer.Insert(true); // Executa o gatilho OnInsert
+                end;
+                ```
+
+
+
+        • **Modificar Dados com Modify e ModifyAll**
+===================================================================
+
+
+            • Para alterar valores de um registro existente, primeiro recupere o registro. Em seguida, atualize os valores e use a função `Modify` para armazenar as alterações no banco de dados.
+            • A função `Modify` também pode ser usada com o parâmetro `RunTrigger` para executar o gatilho `OnModify` no nível da tabela.
+            • Exemplo:
+                ```al
+                customer.Get('4711');
+                customer.Name := 'Richard Roe';
+                customer.Modify(true); // Executa o gatilho OnModify
+                ```
+            • Para atualizar múltiplos registros simultaneamente, use a função `ModifyAll`. Esta função aceita o parâmetro `RunTrigger` como o terceiro parâmetro.
+            • Exemplo:
+                ```al
+                customer.SetRange("Salesperson Code", 'PS');
+                customer.ModifyAll("Salesperson Code", 'JR'); // Atualiza todos os registros com o código 'PS'
+                ```
+
+
+
+        • **Excluir Dados com Delete e DeleteAll**
+===================================================================
+
+
+            • Assim como na função `Modify`, você precisa recuperar um registro do banco de dados antes de poder excluí-lo. As funções `Delete` e `DeleteAll` aceitam o parâmetro `RunTrigger`.
+            • Exemplo:
+                ```al
+                customer.Get('4711');
+                customer.Delete(true); // Executa o gatilho OnDelete
+                ```
+            • A função `DeleteAll` remove múltiplos registros de uma vez.
+            • Exemplo:
+                ```al
+                customer.SetRange("Salesperson Code", 'PS');
+                customer.DeleteAll(); // Remove todos os registros com o código 'PS'
+                ```
+
+
+
+
+
+
+
+		Different Functions
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+
+
+        • **CalcFields e SetAutoCalcFields**
+===================================================================
+
+
+            • **CalcFields**: Usado para calcular valores de FlowFields que não são calculados automaticamente em código AL. Especifique quais FlowFields calcular.
+            • Exemplo:
+                ```al
+                customer.SetRange("Date Filter", 0D, Today());
+                if customer.FindSet() then
+                    repeat
+                        customer.CalcFields(Balance, "Net Change");
+                        // Processar dados adicionais
+                    until customer.Next() = 0;
+                ```
+            • **SetAutoCalcFields**: Define quais FlowFields devem ser calculados automaticamente durante a execução do código. Calcula os FlowFields dentro do escopo da função.
+            • Exemplo:
+                ```al
+                customer.SetAutoCalcFields(Balance, "Net Change");
+                if customer.FindSet() then
+                    repeat
+                        // Processar dados adicionais
+                    until customer.Next() = 0;
+                ```
+
+
+
+        • **CalcSums**
+===================================================================
+
+
+            • Calcula o total para um campo específico, com base nos filtros aplicados no conjunto de dados.
+            • Exemplo:
+                ```al
+                salesInvoiceHeader.SetCurrentKey("Bill-to Customer No.");
+                salesInvoiceHeader.SetRange("Bill-to Customer No.", '10000', '50000');
+                salesInvoiceHeader.SetRange("Document Date", 0D, Today());
+                salesInvoiceHeader.CalcSums(Amount);
+                Message('O total é %1', salesInvoiceHeader.Amount);
+                ```
+
+
+
+        • **FieldError**
+===================================================================
+
+
+            • Gera um erro em tempo de execução e exibe uma mensagem de erro para um campo específico. O campo é destacado com uma borda vermelha.
+            • Exemplo:
+                ```al
+                if item."Unit Price" < 10 then
+                    item.FieldError("Unit Price", 'deve ser maior que 10');
+                ```
+
+
+
+        • **Init**
+===================================================================
+
+
+            • Inicializa todos os campos do registro com seus valores padrão (0 para tipos numéricos, string vazia para texto, etc.). Se você especificou um InitValue no campo, esse valor será usado.
+            • Exemplo:
+                ```al
+                customer.Init();
+                customer.Name := 'John Doe';
+                customer."E-Mail" := 'john.doe@contoso.com';
+                customer.Insert(true);
+                ```
+
+
+
+        • **TestField**
+===================================================================
+
+
+            • Verifica se um campo tem um valor ou está em branco. Gera um erro em tempo de execução se o campo estiver vazio. Pode também verificar se um campo contém um valor específico.
+            • Exemplo:
+                ```al
+                customer.TestField("Salesperson Code");
+                ```
+            • Exemplo para verificar valor específico:
+                ```al
+                customer."Salesperson Code" := 'DK';
+                customer.TestField("Salesperson Code", 'ZX'); // Gera erro se o valor não for 'ZX'
+                ```
+
+
+
+        • **Validate**
+===================================================================
+
+
+            • Quando um valor é atribuído a um campo, o gatilho `OnValidate` do campo não é executado. Use a função `Validate` para executar o gatilho `OnValidate`.
+            • Exemplo:
+                ```al
+                customer."Phone No." := '1234567891234';
+                customer.Validate("Phone No.");
+                ```
+            • Você também pode usar a função `Validate` para atribuir um valor e executar o gatilho `OnValidate` ao mesmo tempo.
+            • Exemplo:
+                ```al
+                customer.Validate("Phone No.", '1234567891234');
+                ```
