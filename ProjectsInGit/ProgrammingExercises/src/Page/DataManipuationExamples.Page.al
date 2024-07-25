@@ -130,3 +130,7 @@ page 55109 "Data Manipuation Examples"
     var
         myInt: Integer;
 }
+
+
+
+

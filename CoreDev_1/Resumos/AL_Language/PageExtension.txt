@@ -1,0 +1,89 @@
+        Page Extension Object
+
+            • O objeto page extension estende um objeto de página do Dynamics 365 Business Central e adiciona ou sobrescreve funcionalidades.
+
+
+	Estrutura
+==========================================================================================
+
+            • A estrutura de uma página é hierárquica e divide-se em três seções:
+                • O primeiro bloco contém metadados para a página geral; o tipo de página e a tabela fonte de onde os dados estão sendo mostrados.
+                • A próxima seção, layout, descreve as partes visuais da página.
+                • A seção final detalha as ações que são publicadas na página.
+
+	Notas
+==========================================================================================
+
+            • Importante: Apenas páginas com a propriedade Extensible definida como true podem ser estendidas.
+            • Nota: Objetos de extensão podem ter um nome com comprimento máximo de 30 caracteres.
+            • Importante: Uma página do tipo API page não pode ser estendida criando um objeto page extension. Em vez disso, crie uma nova API page adicionando um novo objeto de página.
+            • Nota: Modificar ações em grupos de Cue em page extensions não é suportado.
+
+
+
+        Snippet support
+===========================================================================================
+
+
+            •  tpageext criará o layout básico para um objeto de extensão de página ao usar a extensão AL Language para Microsoft Dynamics 365 Business Central no Visual Studio Code.
+
+            •  Use Ctrl+Space para acionar o IntelliSense e obter assistência na conclusão de código, informações de parâmetros, informações rápidas e listas de membros. Para mais informações sobre snippets, veja Syntax and snippets.
+
+
+
+        Views
+============================================================================================
+
+            • As Views no Dynamics 365 Business Central são usadas em páginas de lista para definir uma visão diferente dos dados em uma determinada página.
+            • As Views podem ser definidas para Pages, Page Extensions, e Page Customization.
+            • Para mais informações, veja Views.
+
+        Add tooltips on page fields
+
+            • A partir do Business Central 2024 release wave 1, você pode definir tooltips em campos de tabela.
+            • Quando um tooltip é definido em um campo de tabela, qualquer página que use o campo herda automaticamente o tooltip.
+            • Para mais informações, veja Add tooltips to table and page fields.
+
+
+
+        Using keywords to place actions and controls
+===============================================================================================
+
+
+            • Você pode usar as seguintes keywords na seção layout para colocar e mover campos e grupos na page extension.
+            • Similarmente, na seção actions, você usa essas keywords para colocar ações na ribbon.
+
+        Keywords     Syntax                 Applies to
+        addfirst     addfirst(Anchor)       Anchor: áreas e grupos
+        addlast      addlast(Anchor)        Anchor: áreas e grupos
+        addafter     addafter(Anchor)       Anchor: controles, ações, e grupos
+        addbefore    addbefore(Anchor)      Anchor: controles, ações, e grupos
+        movefirst    movefirst(Anchor;      Anchor: área, grupo
+                    Target1, Target2)     Target: lista de ações ou lista de controles
+        movelast     movelast(Anchor;       Anchor: área, grupo
+                    Target1, Target2)     Target: lista de ações ou lista de controles
+        moveafter    moveafter(Anchor;      Anchor: controles, ações, e grupos
+                    Target1, Target2)     Target: lista de ações ou lista de controles
+        movebefore   movebefore(Anchor;     Anchor: controles, ações, e grupos
+                    Target1, Target2)     Target: lista de ações ou lista de controles
+        modify       modify(Target)         Target: controles, ações, e grupos
+
+
+
+            • Adding Fields:
+                • Se você precisa exibir informações adicionais em uma página que não estão incluídas na tabela base, pode adicionar campos à página através de uma page extension.
+
+            • Modifying Page Layout:
+                • Você pode reorganizar campos, grupos, partes ou ações em uma página para melhor atender aos seus processos de negócios.
+
+            • Adding or Modifying Actions:
+                • Se você precisa adicionar novas ações ou modificar ações existentes, pode fazê-lo com uma page extension.
+
+            • Implementing Business Logic:
+                • Você pode adicionar código para validar a entrada de dados, calcular valores ou implementar outras lógicas de negócios. No entanto, a lógica de negócios deve preferencialmente estar no nível da tabela.
+
+            • Creating Views:
+                • Você pode definir diferentes visualizações dos dados em uma determinada página. Essas visualizações podem ser definidas para Pages, Page Extensions, e Page Customization.
+
+            • Adding Tooltips:
+                • Você pode definir tooltips em campos de tabela. Quando um tooltip é definido em um campo de tabela, qualquer página que usa o campo herda automaticamente o tooltip.

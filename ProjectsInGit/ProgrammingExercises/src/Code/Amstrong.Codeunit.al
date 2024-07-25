@@ -79,29 +79,3 @@ codeunit 55109 "Amstrong Codeunit"
 }
 
 
-
-
-
-
-
-
-
-
-    // loop from 1 to 10000
-    // get the power from the loop number
-
-    // loop over every digit of the loop
-    //get the digit
-
-    // Calculate it's Power
-
-
-    //Add the Power to the temporary Result
-
-
-    //Compare temporary Result with the original number, and if the same then remember
-    // aqui vale limpar a variável pq terá que ser usada de novo
-
-
-    //Message the result
-

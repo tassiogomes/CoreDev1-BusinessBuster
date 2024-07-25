@@ -1,0 +1,95 @@
+
+	• Reset an Clear
+________________________________________________________________________________________________________________________________________________________________________________________________________________________________	
+
+
+        A diferença entre usar Clear() e Reset() em uma variável de registro é simples:
+
+        •  Reset() remove apenas os filtros de uma variável de registro. 
+        •  Clear() remove os filtros e os valores armazenados atualmente na variável, re-inicializando completamente a variável de registro. 
+
+        Isso pode ser importante quando o código que você está escrevendo é executado em um loop. Por exemplo, ao importar registros em uma tabela (inserir), você não quer que os registros importados contenham valores do registro anterior importado.
+
+
+
+
+
+        •  **Reset**
+=============================================================================================
+
+            •  Remove todos os filtros, incluindo filtros especiais definidos por MarkedOnly.
+            •  Altera os campos selecionados para carregamento de volta para todos.
+            •  Altera a chave atual para a chave primária.
+            •  Remove todas as marcações no registro e limpa quaisquer variáveis AL definidas na definição da tabela.
+
+
+
+    ```al
+    var
+        customer: Record Customer;
+    begin
+        customer.SetFilter(City, 'Atlanta');
+        customer.SetRange("Salesperson Code", 'PS');
+        customer.Reset(); // Remove todos os filtros
+        if customer.FindSet() then
+            repeat
+                Message('%1', customer.Name);
+            until customer.Next() = 0;
+    end;
+    ```
+
+
+
+
+        •  **Clear**
+=============================================================================================
+
+            •  Limpa o valor de uma única variável.
+            •  Limpa todos os filtros definidos, se a variável for um registro, e redefine a chave para a chave primária e a empresa na variável de registro.
+            •  Para um tipo de dado composto, como um registro ou uma matriz, todos os elementos são limpos.
+            •  Todos os campos em um registro serão inicializados com a propriedade InitValue do campo.
+
+
+
+    ```al
+    var
+        customer: Record Customer;
+    begin
+        customer.SetFilter(City, 'Atlanta');
+        customer."No." := '4711';
+        Clear(customer); // Remove filtros e re-inicializa a variável
+        if customer.FindSet() then
+            repeat
+                Message('%1', customer.Name);
+            until customer.Next() = 0;
+    end;
+    ```
+
+
+
+
+
+        •  **ClearAll**
+=============================================================================================
+
+
+            •  Limpa todas as variáveis internas (exceto variáveis REC), chaves e filtros no objeto e em quaisquer objetos associados, como relatórios, páginas, codeunits, etc., que contenham código AL.
+            •  ClearAll funciona chamando o método Clear repetidamente em cada variável.
+            •  Quando um método é chamado repetidamente na mesma transação, o sistema retém todos os valores para variáveis e filtros na memória entre as chamadas.
+            •  Por exemplo, isso é usado para atribuir números a números de entrada ao postar. Quando você não deseja reter os valores na memória, use o método ClearAll para limpá-los.
+
+
+    ```al
+    var
+        customer: Record Customer;
+        salesInvoice: Record "Sales Invoice Header";
+    begin
+        customer.SetFilter(City, 'Atlanta');
+        salesInvoice.SetFilter("Bill-to Customer No.", '10000');
+        ClearAll(); // Limpa todas as variáveis internas, chaves e filtros
+        if customer.FindSet() then
+            repeat
+                Message('%1', customer.Name);
+            until customer.Next() = 0;
+    end;
+    ```
