@@ -2,7 +2,7 @@
 
 	
 	• tpageext - snippet para abrir o modelo de page extension
-	• Normalmente sado para as tabelas de raiz.
+	• Normalmente usado para as tabelas de raiz.
 
 
 

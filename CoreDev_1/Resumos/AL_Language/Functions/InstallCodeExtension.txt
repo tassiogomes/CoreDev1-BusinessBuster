@@ -1,0 +1,71 @@
+
+	• Array Functions
+________________________________________________________________________________________________________________	
+
+
+	 Tip
+
+	Use the shortcuts tcodeunit and ttrigger to create the basic structure for the codeunit and trigger.
+        • O código de instalação é executado quando:
+        • Uma extensão é instalada pela primeira vez.
+        • Uma versão desinstalada é instalada novamente.
+        • O código de instalação não é executado quando uma nova versão de uma extensão existente é instalada como parte da operação de atualização.
+
+        • Como escrever código de instalação
+        • Você escreve a lógica de instalação em um codeunit de instalação. Este codeunit tem a propriedade SubType definida como Install.
+
+
+	• Triggers
+================================================================================
+
+
+        • Um codeunit de instalação suporta dois Triggers de sistema onde você pode adicionar o código de instalação:
+        • O codeunit de instalação torna-se uma parte integral da versão da extensão. Você pode ter mais de um codeunit de instalação, mas não há garantia sobre a ordem de execução dos diferentes codeunits.
+
+
+
+        • OnInstallAppPerCompany() – Inclui código para operações relacionadas à empresa. Executa uma vez para cada empresa no banco de dados.
+        • OnInstallAppPerDatabase() – Inclui código para operações relacionadas ao banco de dados. Executa uma vez em todo o processo de instalação.
+
+
+        •  OnInstallAppPerDatabase() para verificar se uma versão da extensão está sendo instalada pela primeira vez ou se está sendo reinstalada.
+        
+        codeunit 50100 MyInstallCodeunit
+        {
+            Subtype=Install;
+        
+            trigger OnInstallAppPerDatabase();
+            var
+                myAppInfo : ModuleInfo;
+            begin
+                // Obter informações sobre o módulo atualmente em execução
+                NavApp.GetCurrentModuleInfo(myAppInfo); 
+        
+                // Um 'DataVersion' de 0.0.0.0 indica uma instalação 'nova'
+                if myAppInfo.DataVersion = Version.Create(0,0,0,0) then 
+                    HandleFreshInstall
+                else
+                    // Se não for uma instalação nova, então estamos reinstalando a mesma versão da extensão
+                    HandleReinstall;
+            end;
+        
+            local procedure HandleFreshInstall()
+            begin
+                // Realizar o trabalho necessário na primeira vez que esta extensão é instalada para este locatário.
+                // Alguns possíveis usos:
+                // - Callback de serviço/telemetria indicando que a extensão foi instalada
+                // - Configuração inicial de dados para uso
+            end;
+        
+            local procedure HandleReinstall()
+            begin
+                // Realizar o trabalho necessário ao reinstalar a mesma versão desta extensão de volta para este locatário.
+                // Alguns possíveis usos:
+                // - Callback de serviço/telemetria indicando que a extensão foi reinstalada
+                // - Trabalho de 'patchup' de dados, por exemplo, detectando se novos registros 'base' foram
+                //   alterados enquanto você estava trabalhando 'offline'.
+                // - Configuração de mensagens de 'bem-vindo de volta' para o próximo acesso do usuário.
+            end;
+        }
+
+
