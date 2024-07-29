@@ -93,6 +93,7 @@ table 60101 "Chicken Table"
 
     var
         myInt: Integer;
+        ChickenTableCodeunit: Codeunit "Chicken Table Codeunit";
 
     trigger OnInsert()
     begin
@@ -106,7 +107,7 @@ table 60101 "Chicken Table"
 
     trigger OnDelete()
     begin
-
+        ChickenTableCodeunit.DeletionLogic();
     end;
 
     trigger OnRename()

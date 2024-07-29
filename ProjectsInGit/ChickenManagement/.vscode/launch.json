@@ -14,7 +14,7 @@
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
             "tenant": "ciellostassiogomes.onmicrosoft.com"
-            //"schemaUpdateMode": "Recreate" USADO PARA QUANDO MUDA NOME E TABELAS
+            //"schemaUpdateMode": "Recreate" //USADO PARA QUANDO MUDA NOME E TABELAS
  
         }
     ]

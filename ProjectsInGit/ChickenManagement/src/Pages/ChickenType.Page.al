@@ -7,7 +7,7 @@ page 60107 "Chicken Type Page"
     Editable = true;                        // Impede edição direta na lista.
     InsertAllowed = true;  					// Impede inserções.
     ModifyAllowed = true;  					// Permite modificações.
-    DeleteAllowed = false;  				// Impede deleções.
+    DeleteAllowed = true;  				    // Impede deleções.
     Caption = 'Chicken Type List';
 
     layout

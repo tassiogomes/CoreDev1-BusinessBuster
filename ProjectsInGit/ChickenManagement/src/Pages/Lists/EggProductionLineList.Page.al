@@ -1,13 +1,11 @@
-page 60115 "Egg Production Subpgage"
+page 60205 "Egg Production Line List"
 {
-    Caption = 'Egg Production Subpage';
-    PageType = ListPart;
+    PageType = List;
     ApplicationArea = All;
     UsageCategory = Lists;
     SourceTable = "Egg Production Line Table";
-    AutoSplitKey = true;                    // Autoincremento a cada uma criada pelo user.
-    DelayedInsert = true;  
-    DeleteAllowed = true;                 // Só completa a transaction depois de cada uma ser realizada, fica em fila.
+    Editable = true;
+    DeleteAllowed = true;
 
     layout
     {
@@ -25,6 +23,11 @@ page 60115 "Egg Production Subpgage"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Chicken Description field.', Comment = '%';
                 }
+                field("Document No."; Rec."Document No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the No. field.', Comment = '%';
+                }
                 field("Egg Production Date"; Rec."Egg Production Date")
                 {
                     ApplicationArea = All;
@@ -41,6 +44,10 @@ page 60115 "Egg Production Subpgage"
                     ToolTip = 'Specifies the value of the Quantity field.', Comment = '%';
                 }
             }
+        }
+        area(Factboxes)
+        {
+
         }
     }
 

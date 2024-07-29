@@ -1,18 +1,19 @@
-page 60116 "Egg Production Document Page"
+page 60117 "Egg Production List Page"
 {
-    PageType = Document;
+    PageType = List;
     ApplicationArea = All;
-    UsageCategory = Documents;
+    UsageCategory = Lists;
+    Editable = false;
     DeleteAllowed = true;
     SourceTable = "Egg Production Header";
+    CardPageId = "Egg Production Document Page";   // abre um card com o documento ao clicar no id
 
     layout
     {
         area(Content)
         {
-            group(General)
+            repeater(General)
             {
-                Caption = 'General Information';
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
@@ -24,12 +25,10 @@ page 60116 "Egg Production Document Page"
                     ToolTip = 'Specifies the value of the Document Date field.', Comment = '%';
                 }
             }
-                part(Lines; "Egg Production Subpgage") // lines é um nome dado por nós e depois é a origem de onde vem as linhas.
-                {
-                    ApplicationArea = All;
-                    SubPageLink = "Document No." = field("No."); // Chave da EggProductionLineTable = ao No. desse document.
+        }
+        area(Factboxes)
+        {
 
-                }
         }
     }
 
@@ -48,7 +47,4 @@ page 60116 "Egg Production Document Page"
             }
         }
     }
-
-    var
-        myInt: Integer;
 }
