@@ -1,0 +1,50 @@
+The below script will create a container with the requested settings:
+
+$containerName = 'bcserver'
+$password = 'P@ssw0rd'
+$securePassword = ConvertTo-SecureString -String $password -AsPlainText -Force
+$credential = New-Object pscredential 'admin', $securePassword
+$auth = 'UserPassword'
+$artifactUrl = Get-BcArtifactUrl -type 'Sandbox' -country 'us' -select 'Latest'
+New-BcContainer `
+    -accept_eula `
+    -containerName $containerName `
+    -credential $credential `
+    -auth $auth `
+    -artifactUrl $artifactUrl `
+    -imageName 'mybcimage' `
+    -multitenant:$false `
+    -vsixFile (Get-LatestAlLanguageExtensionUrl) `
+    -updateHosts
+
+
+Setting SA Password and enabling SA
+Creating admin as SQL User and add to sysadmin
+Creating SUPER user
+Container IP Address: 172.29.138.68
+Container Hostname  : bcserver
+Container Dns Name  : bcserver
+Web Client          : http://bcserver/BC/
+Dev. Server         : http://bcserver
+Dev. ServerInstance : BC
+Setting bcserver to 172.29.138.68 in host hosts file
+
+Files:
+http://bcserver:8080/Microsoft.VisualStudio.Services.VSIXPackage.vsix
+
+Container Total Physical Memory is 8.5Gb
+Container Free Physical Memory is 5.4Gb
+
+Initialization took 340 seconds
+Ready for connections!
+Reading CustomSettings.config from bcserver
+Creating Desktop Shortcuts for bcserver
+Cleanup old dotnet core assemblies
+Container bcserver successfully created
+
+Use:
+Get-BcContainerEventLog -containerName bcserver to retrieve a snapshot of the event log from the container
+Get-BcContainerDebugInfo -containerName bcserver to get debug information about the container
+Enter-BcContainer -containerName bcserver to open a PowerShell prompt inside the container
+Remove-BcContainer -containerName bcserver to remove the container again
+docker logs bcserver to retrieve information about URL's again

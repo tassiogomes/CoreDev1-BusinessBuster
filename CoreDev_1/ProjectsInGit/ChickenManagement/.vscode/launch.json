@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Microsoft cloud sandbox",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "environmentName": "SandboxDev",
+            "startupObjectId": 60117,
+            "startupObjectType": "Page",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "tenant": "ciellostassiogomes.onmicrosoft.com"
+            //"schemaUpdateMode": "Recreate" //USADO PARA QUANDO MUDA NOME E TABELAS
+ 
+        }
+    ]
+}

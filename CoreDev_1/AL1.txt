@@ -1,0 +1,97 @@
+JSON BC
+
+Dois tipos
+
+
+
+launch.json file - INFORMAÇÕES SOBRE CONFIGURAÇÃO
+
+"version
+"0.2.0",
+"configurations" .
+"name": "Microsoft c loud sandbox"
+"request": "Iaunch" ,
+"type • "al
+"environmentType": "Sandbox" ,
+"environmentName" .
+"sandbox" ,
+"startupObjectId" :
+22,
+"startupObjectType": "
+Page
+"breakOnError": true,
+"IaunchBrowser": true,
+"enab1eLongRunningSq1Statements": true,
+"enab1eSqlInformationDebugger" : true
+
+it's important to first learn about the startupObjectId and startupObjectType properties in this launch.json file.
+
+
+app.json - INFORMAÇÕES SOBRE A EXTENSÃO
+
+
+
+"id". "b6ô639ae-f781-49d1-92d9-9ccfabb451e9" ,
+"name": "ALProject4" ,
+"publisher": "Default publisher" ,
+"version"
+: "I.e.a.ô" ,
+"brief":
+"description":
+"privacyStatement": ,
+"EULA": ,
+"help": ,
+"uri": ,
+"logo":
+"dependencies" .n,
+screenshots " :a,
+"platform "
+T': 17 .e.e.ô",
+"application •
+"17.0.0.0",
+"idRanges" :"from": 50100,
+"to": 50149
+"contextSensitiveHelpUr1": "https://ALProject4. com/help/",
+"showMyCode": true,
+"runtime
+
+-----------------------------------------------
+The AL Explorer has four tabs:
+
+OBJECTS
+
+EVENTS
+
+APIS
+
+EXTENSIBLE ENUMS
+----------------------------------------------
+
+EXTENSIONS:
+
+AZ AL Dev Tools/AL Code Outline (Andrzej Zwierzchowski)
+AL Object Designer (Márton Sági)
+waldo's CRS AL Language Extension (waldo)
+Docker (Microsoft)
+GitLens (Eric Amodio)
+Insert GUID (Heath Stewart)
+-----------------------------------------------
+
+Here are some key points about using a sandbox in Business Central for development:
+
+Isolation: It’s completely separated from the production environment, ensuring that any testing or development does not impact real business data.
+Safety: If anything goes wrong during testing, the sandbox can be deleted and recreated without any risk to the production environment.
+
+O VSCode só pode se conectar ao sandbox, não à production!
+
+CRIAR SANDBOX NO BC
+
+Tell me - sandbox - sandbox environment (preview) - create
+Admin Center - Environments - New - 
+---------------------------------------------------------
+
+FUNÇÕES
+
+No SANDBOX (e não na production) quando se cria uma nova empresa aparece mais uma opcao de setup depois de intruduzir o nome da empresa.
+Advanced Evaluation (complete sample data) - que significa criar a base de dados + master data e sen trasactions.
+Nas settings iniciais aparede o "Design" como opção - 		
