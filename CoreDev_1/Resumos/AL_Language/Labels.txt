@@ -1,0 +1,68 @@
+	
+
+
+
+
+
+	• O tipo de dado Label em AL é uma constante de string que pode ser traduzida para vários idiomas.
+		• Utilizado em legendas, descrições, mensagens, etc.
+
+	• Parâmetros opcionais:
+		• Comment: Comentários gerais sobre o label, especialmente sobre os espaços reservados.
+		• Locked: Booleano. Se true, o label não deve ser traduzido. Valor padrão é false.
+		• MaxLength: Inteiro. Determina o comprimento máximo do label. Sem limite padrão se não especificado.
+
+	• Sintaxe exemplo:
+		• var a: Label 'Texto do Label', Comment='Comentário sobre o label', MaxLength=999, Locked=true;
+
+	• Usos:
+		• Propriedades de página e relatório:
+			• Caption = 'Texto da legenda', Comment = 'Comentário sobre a legenda', Locked = false, MaxLength = 999;
+		• Exemplo de uso em propriedades:
+			• Caption property
+			• ToolTip property
+			• OptionCaption property
+
+	• Exemplos:
+		• Declaração de label:
+			• var
+				• myLabel: Label 'Este é um texto de label', Comment='Explicação sobre o texto', MaxLength=50, Locked=true;
+		• Uso em uma página:
+			• label(MyPageLabel)
+				• {
+					• ApplicationArea = Basic, Suite;
+					• Caption = 'Texto exibido na página';
+				• }
+
+
+
+
+
+If requesting support, please provide the following details to help troubleshooting:
+
+Error message: 
+The date is not valid.
+
+Page Customer Ledger Entries Page Extension has to close.
+
+Internal session ID: 
+b5d14780-9008-4638-9795-37983da453e5
+
+Application Insights session ID: 
+652b92dd-c9b3-4279-8083-44bbe623d50f
+
+Client activity id: 
+425b7710-c7a0-41db-896a-ae5b5e6db8f1
+
+Time stamp on error: 
+2024-08-05T15:29:58.4824626Z
+
+User telemetry id: 
+151cf7c0-cdc2-4d87-8d44-1e9aa2130aef
+
+AL call stack: 
+"Customer Ledger Tab Extension"(TableExtension 50104).GetNumberOfDaysExpired line 7 - Visualizing Expired Customer Ledgers by Tassio Gomes
+"Customer Ledger Page Extension"(PageExtension 50125).OnAfterGetRecord(Trigger) line 2 - Visualizing Expired Customer Ledgers by Tassio Gomes
+
+
+
